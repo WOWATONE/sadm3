@@ -1,7 +1,9 @@
-ALTER TABLE [dbo].[producto] ADD ban4 NVARCHAR(50) NULL
+ALTER TABLE [dbo].[producto] 
+ADD ban4 NVARCHAR(50) NULL
 GO
 
-ALTER TABLE [dbo].[producto] ADD niving NVARCHAR(50) NULL
+ALTER TABLE [dbo].[producto] 
+ADD niving NVARCHAR(50) NULL
 GO
 
 
