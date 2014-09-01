@@ -6,7 +6,6 @@ ALTER TABLE [dbo].[producto]
 ADD niving NVARCHAR(50) NULL
 GO
 
-
 ALTER TABLE [dbo].[producto]
 ADD TipoProceso VARCHAR(30)
 GO
