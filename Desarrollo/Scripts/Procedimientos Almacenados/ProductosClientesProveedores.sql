@@ -6,7 +6,6 @@
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_pcp_prod_alta') AND type in (N'P', N'PC'))
 	DROP PROCEDURE dbo.sp_pcp_prod_alta
-
 GO
 
 CREATE PROCEDURE sp_pcp_prod_alta
@@ -95,7 +94,6 @@ GO
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_pcp_prod_modificar') AND type in (N'P', N'PC'))
 	DROP PROCEDURE dbo.sp_pcp_prod_modificar
-
 GO
 
 CREATE PROCEDURE sp_pcp_prod_modificar
@@ -190,12 +188,17 @@ BEGIN
 
 END
 
+GO
 
 -- =============================================
 -- Autor: Carlos Fabrizio Arriola Carmona
 -- Fecha Creación: 29/Julio/2014
 -- Description: Alta de cliente para el módulo de productos, clientes, proveedores.
 -- =============================================
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_pcp_cliente_alta') AND type in (N'P', N'PC'))
+	DROP PROCEDURE dbo.sp_pcp_cliente_alta
+GO
+
 CREATE PROCEDURE sp_pcp_cliente_alta
 
 	@nombre nvarchar(240),
@@ -245,8 +248,7 @@ CREATE PROCEDURE sp_pcp_cliente_alta
 	@iva nvarchar(50),
 	@descuento nvarchar(50),
 	@cep2 ntext,
-	@fec_alta datetime,
-	@mod_alta varchar(15),
+	@mod_alta varchar(40),
 	@usu_alta int
 
 AS
@@ -277,7 +279,7 @@ BEGIN
 	   @telefono1, @fax1, @funcion1, @contacto2, @mail2,
 	   @telefono2, @fax2, @funcion2, @moneda, @modopago,
 	   @cuenta1, @cep1, @credito, @metodopago, @iva,
-	   @descuento, @cep2, @fec_alta, @mod_alta, @usu_alta)
+	   @descuento, @cep2, GETDATE(), @mod_alta, @usu_alta)
 
 END
 
@@ -289,7 +291,6 @@ END
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_pcp_cliente_modificacion') AND type in (N'P', N'PC'))
 	DROP PROCEDURE dbo.sp_pcp_cliente_modificacion
-
 GO
 
 CREATE PROCEDURE sp_pcp_cliente_modificacion
@@ -342,7 +343,7 @@ CREATE PROCEDURE sp_pcp_cliente_modificacion
 	@descuento nvarchar(50),
 	@cep2 ntext,
 	@fec_mod datetime,
-	@mod_mod varchar(15),
+	@mod_mod varchar(40),
 	@usu_mod int
 
 AS
@@ -414,8 +415,7 @@ END
 -- =============================================
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_pcp_prov_alta') AND type in (N'P', N'PC'))
-DROP PROCEDURE dbo.sp_pcp_prov_alta
-
+	DROP PROCEDURE dbo.sp_pcp_prov_alta
 GO
 
 CREATE PROCEDURE sp_pcp_prov_alta
@@ -436,7 +436,24 @@ CREATE PROCEDURE sp_pcp_prov_alta
 	@fax nvarchar(50),
 	@funcion nvarchar(50),
 	@mod_alta varchar(40),
-	@usu_alta int
+	@usu_alta int,
+
+	@dpto nvarchar(50), -- modif
+	@quien nvarchar(50),
+	@clave nvarchar(50),
+	@fecha datetime,
+	@hora datetime,
+	@codigo nvarchar(100),
+	@modificacion nvarchar(200),
+	@ordenfabricacion nvarchar(50),
+	@ordencliente nvarchar(50),
+	@clienteproveedor nvarchar(50),
+	@ubicacion nvarchar(50),
+	@lote nvarchar(50),
+	@modulo nvarchar(50),
+	@cantidad nvarchar(50),
+	@almacen nvarchar(50)
+
 
 AS
 BEGIN
@@ -457,6 +474,12 @@ BEGIN
 	   @contacto, @email, @telefono, @fax, @funcion,
 	   GETDATE(), @mod_alta, @usu_alta)
 
+	   EXEC sp_movimientos_alta @dpto, @quien, @clave, @fecha, @hora,
+								@codigo, @modificacion, @ordenfabricacion, @ordencliente, @clienteproveedor,
+								@ubicacion, @lote, @modulo, @cantidad, @almacen,
+								null, null
+
+
 END
 
 -- =============================================
@@ -466,8 +489,7 @@ END
 -- =============================================
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_pcp_prov_modificar') AND type in (N'P', N'PC'))
-DROP PROCEDURE dbo.sp_pcp_prov_modificar
-
+	DROP PROCEDURE dbo.sp_pcp_prov_modificar
 GO
 
 CREATE PROCEDURE sp_pcp_prov_modificar
@@ -488,7 +510,23 @@ CREATE PROCEDURE sp_pcp_prov_modificar
 	@fax nvarchar(50),
 	@funcion nvarchar(50),
 	@mod_mod varchar(40),
-	@usu_mod int
+	@usu_mod int,
+
+	@dpto nvarchar(50), -- modif
+	@quien nvarchar(50),
+	@clave nvarchar(50),
+	@fecha datetime,
+	@hora datetime,
+	@codigo nvarchar(100),
+	@modificacion nvarchar(200),
+	@ordenfabricacion nvarchar(50),
+	@ordencliente nvarchar(50),
+	@clienteproveedor nvarchar(50),
+	@ubicacion nvarchar(50),
+	@lote nvarchar(50),
+	@modulo nvarchar(50),
+	@cantidad nvarchar(50),
+	@almacen nvarchar(50)
 
 AS
 BEGIN
@@ -516,4 +554,10 @@ BEGIN
 		 usu_mod = @usu_mod
 
 		 WHERE nombre = @nombre
+
+		 EXEC sp_movimientos_alta @dpto, @quien, @clave, @fecha, @hora,
+								@codigo, @modificacion, @ordenfabricacion, @ordencliente, @clienteproveedor,
+								@ubicacion, @lote, @modulo, @cantidad, @almacen,
+								null, null
+
 END
