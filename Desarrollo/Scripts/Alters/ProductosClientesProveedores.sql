@@ -50,6 +50,14 @@ ALTER TABLE [dbo].[producto]
 ADD usu_mod INT
 GO
 
+ALTER TABLE producto
+ADD CONSTRAINT UK_Producto_desc_prod UNIQUE (desc_prod )
+GO
+
+ALTER TABLE producto
+ADD CONSTRAINT UK_Producto_c_interno UNIQUE (c_interno )
+GO
+
 --
 ALTER TABLE cliente
 ADD CONSTRAINT UK_Cliente_nombre UNIQUE (nombre)
