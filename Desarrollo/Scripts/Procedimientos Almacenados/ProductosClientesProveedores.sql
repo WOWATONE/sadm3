@@ -249,7 +249,23 @@ CREATE PROCEDURE sp_pcp_cliente_alta
 	@descuento nvarchar(50),
 	@cep2 ntext,
 	@mod_alta varchar(40),
-	@usu_alta int
+	@usu_alta int,
+
+	@dpto nvarchar(50), -- modif
+	@quien nvarchar(50),
+	@clave nvarchar(50),
+	@fecha datetime,
+	@hora datetime,
+	@codigo nvarchar(100),
+	@modificacion nvarchar(200),
+	@ordenfabricacion nvarchar(50),
+	@ordencliente nvarchar(50),
+	@clienteproveedor nvarchar(50),
+	@ubicacion nvarchar(50),
+	@lote nvarchar(50),
+	@modulo nvarchar(50),
+	@cantidad nvarchar(50),
+	@almacen nvarchar(50)
 
 AS
 BEGIN
@@ -280,6 +296,10 @@ BEGIN
 	   @telefono2, @fax2, @funcion2, @moneda, @modopago,
 	   @cuenta1, @cep1, @credito, @metodopago, @iva,
 	   @descuento, @cep2, GETDATE(), @mod_alta, @usu_alta)
+
+	   EXEC sp_movimientos_alta @dpto, @quien, @clave, @fecha, @hora,
+						    @codigo, @modificacion, @ordenfabricacion, @ordencliente, @clienteproveedor,
+						    @ubicacion, @lote, @modulo, @cantidad, @almacen, null, null
 
 END
 
@@ -342,9 +362,24 @@ CREATE PROCEDURE sp_pcp_cliente_modificacion
 	@iva nvarchar(50),
 	@descuento nvarchar(50),
 	@cep2 ntext,
-	@fec_mod datetime,
 	@mod_mod varchar(40),
-	@usu_mod int
+	@usu_mod int,
+
+	@dpto nvarchar(50), -- modif
+	@quien nvarchar(50),
+	@clave nvarchar(50),
+	@fecha datetime,
+	@hora datetime,
+	@codigo nvarchar(100),
+	@modificacion nvarchar(200),
+	@ordenfabricacion nvarchar(50),
+	@ordencliente nvarchar(50),
+	@clienteproveedor nvarchar(50),
+	@ubicacion nvarchar(50),
+	@lote nvarchar(50),
+	@modulo nvarchar(50),
+	@cantidad nvarchar(50),
+	@almacen nvarchar(50)
 
 AS
 BEGIN
@@ -400,11 +435,15 @@ BEGIN
 			iva = @iva,
 			descuento = @descuento,
 			cep2 = @cep2,
-			fec_mod = @fec_mod,
+			fec_mod = GETDATE(),
 			mod_mod = @mod_mod,
 			usu_mod = @usu_mod 
 
 			WHERE nombre = @nombre
+
+   EXEC sp_movimientos_alta @dpto, @quien, @clave, @fecha, @hora,
+						    @codigo, @modificacion, @ordenfabricacion, @ordencliente, @clienteproveedor,
+						    @ubicacion, @lote, @modulo, @cantidad, @almacen, null, null
 
 END
 

@@ -52,6 +52,14 @@ GO
 
 --
 ALTER TABLE cliente
+ADD CONSTRAINT UK_Cliente_nombre UNIQUE (nombre)
+GO
+
+ALTER TABLE cliente
+ADD CONSTRAINT UK_Cliente_nombre_comp UNIQUE (nombre_comp )
+GO
+
+ALTER TABLE cliente
 ADD colonia VARCHAR(200)
 GO
 
@@ -92,10 +100,6 @@ ADD usu_mod INT
 GO
 
 --
-ALTER TABLE proveedor
-ADD CONSTRAINT UK_Proveedor_codigo UNIQUE (nombre)
-GO
-
 ALTER TABLE [dbo].[proveedor]
 ADD fec_alta DATETIME
 GO
