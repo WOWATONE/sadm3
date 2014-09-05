@@ -33,8 +33,7 @@ CREATE PROCEDURE sp_pcp_prod_alta
 	@precio nvarchar (50),
 	@factor nvarchar(50),
 	@foto nvarchar(50),
-	-- Detalle
-	@num_orden nvarchar(50),
+	@num_orden nvarchar(50),	-- Detalle
 	@aql nvarchar(100),
 	@caducidad nvarchar(50),
 	@plandecontrol nvarchar(50),
@@ -55,7 +54,23 @@ CREATE PROCEDURE sp_pcp_prod_alta
 	@e_lotec int,
 	@comen ntext,
 	@mod_alta varchar(40),
-	@usu_alta int
+	@usu_alta int,
+	@dpto nvarchar(50), -- modif
+	@quien nvarchar(50),
+	@clave nvarchar(50),
+	@fecha datetime,
+	@hora datetime,
+	@codigo nvarchar(100),
+	@modificacion nvarchar(200),
+	@ordenfabricacion nvarchar(50),
+	@ordencliente nvarchar(50),
+	@clienteproveedor nvarchar(50),
+	@ubicacion nvarchar(50),
+	@lote nvarchar(50),
+	@modulo nvarchar(50),
+	@cantidad nvarchar(50),
+	@almacen nvarchar(50)
+
 AS
 BEGIN
 
@@ -85,6 +100,18 @@ BEGIN
 			 @e_lote, @codigodibujo, @niving, @ban4, @fa,
 			 @e_bolsa, @e_loteb, @e_caja, @e_lotec, @comen,
 			 GETDATE(), @mod_alta, @usu_alta)
+
+     INSERT INTO tinven
+		    (c_interno, c_num, inven, stockmin, stockmax)
+
+			VALUES
+			(@c_cliente + ' Rev:' + @nivelrevision, 'c_num', 0, @stockmin, @stockmax)
+
+	
+	EXEC sp_movimientos_alta @dpto, @quien, @clave, @fecha, @hora,
+						    @codigo, @modificacion, @ordenfabricacion, @ordencliente, @clienteproveedor,
+						    @ubicacion, @lote, @modulo, @cantidad, @almacen, null, null
+
 END
 
 GO
@@ -103,44 +130,41 @@ CREATE PROCEDURE sp_pcp_prod_modificar
 	
 	@desc_prod nvarchar (200),
 	@desc_com nvarchar (50),
-	@precio nvarchar (50),
-	@factor nvarchar(50),
-	@precioinven nvarchar (50),
 	@pesoneto nvarchar (50),
 	@peso nvarchar (50),
 	@porc1 nvarchar (50),
 	@porc2 nvarchar (50),
-	@eficiencia nvarchar (50),
-	@ciclo nvarchar (50),
 	@estado nvarchar (50),
 	@linea nvarchar(50),
 	@nivelrevision nvarchar(50),
 	@maquina nvarchar(50),
+	@TipoProceso nvarchar(30),
+	@TipoProducto nvarchar(20),
+	@precioinven nvarchar (50),
+	@precio nvarchar (50),
+	@factor nvarchar(50),
 	@foto nvarchar(50),
-	-- Detalle
-	@num_orden nvarchar(50),
 	@aql nvarchar(100),
 	@caducidad nvarchar(50),
-	@plandecontrol nvarchar(50),
-	@cavidad nvarchar(50),
-	@minmen nvarchar(50),
-	@niving nvarchar(50),
-	@opmaq nvarchar(50),
-	@fa nvarchar(50),
-	@molde nvarchar(50),
 	@stockmin nvarchar(50),
 	@stockmax nvarchar(50),
-	@codigodibujo nvarchar(100),
-	@e_bolsa int,
-	@e_loteb int,
-	@e_caja int,
-	@e_lotec int,
-	@e_lote int,
-	@comen ntext,
-	@ban4 nvarchar(50),
-	@fec_mod datetime,
-	@mod_mod varchar(15),
-	@usu_mod int
+	@mod_mod varchar(40),
+	@usu_mod int,
+	@dpto nvarchar(50), -- modif
+	@quien nvarchar(50),
+	@clave nvarchar(50),
+	@fecha datetime,
+	@hora datetime,
+	@codigo nvarchar(100),
+	@modificacion nvarchar(200),
+	@ordenfabricacion nvarchar(50),
+	@ordencliente nvarchar(50),
+	@clienteproveedor nvarchar(50),
+	@ubicacion nvarchar(50),
+	@lote nvarchar(50),
+	@modulo nvarchar(50),
+	@cantidad nvarchar(50),
+	@almacen nvarchar(50)
 AS
 BEGIN
 
@@ -149,46 +173,33 @@ BEGIN
 	 UPDATE producto
 
 	 SET desc_com = @desc_com,				
-		 precio = @precio,
-		 factor = @factor,
-		 precioinven = @precioinven,
 		 pesoneto = @pesoneto,
 		 peso = @peso,
 		 porc1 = @porc1,
 		 porc2 = @porc2,
-		 eficiencia = @eficiencia,
-		 ciclo = @ciclo,
 		 estado = @estado,
 		 linea = @linea,
 		 nivelrevision = @nivelrevision,
 		 maquina = @maquina,
+		 TipoProceso = @TipoProceso,
+		 TipoProducto = @TipoProducto,
+		 precioinven = @precioinven,
+		 precio = @precio,
+		 factor = @factor,
 		 foto = @foto,
-		 num_orden = @num_orden,
 		 aql = @aql,
 		 caducidad = @caducidad,
-		 plandecontrol = @plandecontrol,
-		 cavidad = @cavidad,
-		 minmen = @minmen,
-		 niving = @niving,
-		 opmaq = @opmaq,
-		 fa = @opmaq,
-		 molde = @molde,
 		 stockmin = @stockmin,
 		 stockmax = @stockmax,
-		 codigodibujo = @codigodibujo,
-		 e_bolsa = @e_bolsa,
-		 e_loteb = @e_loteb,
-		 e_caja = @e_caja,
-		 e_lotec = @e_lotec,
-		 e_lote = @e_lote,
-		 comen = @comen,
-		 ban4 = @ban4,
-		 fec_mod = @fec_mod,
 		 mod_mod = @mod_mod,
+		 fec_mod = GETDATE(),
 		 usu_mod = @usu_mod
 
 		 WHERE desc_prod = @desc_prod
 
+		 EXEC sp_movimientos_alta @dpto, @quien, @clave, @fecha, @hora,
+						    @codigo, @modificacion, @ordenfabricacion, @ordencliente, @clienteproveedor,
+						    @ubicacion, @lote, @modulo, @cantidad, @almacen, null, null
 END
 
 GO
