@@ -145,5 +145,5 @@ ADD usu_mod INT
 GO
 
 ALTER TABLE proveedor
-ADD CONSTRAINT UK_Proveedor_codigo UNIQUE (nombre)
+ADD CONSTRAINT UK_Proveedor_nombre UNIQUE (nombre)
 
