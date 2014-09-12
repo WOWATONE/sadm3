@@ -32,7 +32,7 @@ CREATE PROCEDURE sp_pcp_prod_alta
 	@precioinven nvarchar (50),
 	@precio nvarchar (50),
 	@factor nvarchar(50),
-	@foto nvarchar(50),
+	@foto nvarchar(200),
 	@num_orden nvarchar(50),	-- Detalle
 	@aql nvarchar(100),
 	@caducidad nvarchar(50),
@@ -143,7 +143,7 @@ CREATE PROCEDURE sp_pcp_prod_modificar
 	@precioinven nvarchar (50),
 	@precio nvarchar (50),
 	@factor nvarchar(50),
-	@foto nvarchar(50),
+	@foto nvarchar(200),
 	@aql nvarchar(100),
 	@caducidad nvarchar(50),
 	@stockmin nvarchar(50),
@@ -203,6 +203,124 @@ BEGIN
 END
 
 GO
+
+-- =============================================
+-- Autor: Carlos Fabrizio Arriola Carmona
+-- Fecha Creación: 11/Sept/2014
+-- Description: Alta de Inventario para el modulo de productos, clientes, proveedores.
+-- =============================================
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_pcp_inventario_alta') AND type in (N'P', N'PC'))
+	DROP PROCEDURE dbo.sp_pcp_inventario_alta
+GO
+
+CREATE PROCEDURE sp_pcp_inventario_alta
+
+		@c_interno nvarchar(50),
+		@stockmin int,
+		@stockmax int
+
+AS
+BEGIN
+
+	SET NOCOUNT ON;
+
+	 INSERT INTO tinven(c_interno, c_num, inven, stockmin, stockmax)
+
+	 VALUES(@c_interno, 'c_num', 0, @stockmin, @stockmax)
+END
+
+-- =============================================
+-- Autor: Carlos Fabrizio Arriola Carmona
+-- Fecha Creación: 11/Sept/2014
+-- Description: Alta de Componente para el modulo de productos, clientes, proveedores.
+-- =============================================
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_pcp_inventario_componente_alta') AND type in (N'P', N'PC'))
+	DROP PROCEDURE dbo.sp_pcp_inventario_componente_alta
+GO
+
+CREATE PROCEDURE sp_pcp_inventario_componente_alta
+
+		@c_interno nvarchar(50),
+		@codigo nvarchar(50),
+		@cantidad int
+AS
+BEGIN
+
+	SET NOCOUNT ON;
+
+	 INSERT INTO componente(c_interno, codigo, cantidad)
+
+	 VALUES(@c_interno, @codigo, @cantidad)
+END
+
+-- =============================================
+-- Autor: Carlos Fabrizio Arriola Carmona
+-- Fecha Creación: 12/Sept/2014
+-- Description: Eliminación de Componentes para el modulo de productos, clientes, proveedores.
+-- =============================================
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_pcp_inventario_componente_eliminar') AND type in (N'P', N'PC'))
+	DROP PROCEDURE dbo.sp_pcp_inventario_componente_eliminar
+GO
+
+CREATE PROCEDURE sp_pcp_inventario_componente_eliminar
+
+		@c_interno nvarchar(50)
+AS
+BEGIN
+
+	SET NOCOUNT ON;
+
+	 DELETE componente
+	 WHERE c_interno = @c_interno
+
+END
+
+-- =============================================
+-- Autor: Carlos Fabrizio Arriola Carmona
+-- Fecha Creación: 11/Sept/2014
+-- Description: Alta de Empaque para el modulo de productos, clientes, proveedores.
+-- =============================================
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_pcp_inventario_empaque_alta') AND type in (N'P', N'PC'))
+	DROP PROCEDURE dbo.sp_pcp_inventario_empaque_alta
+GO
+
+CREATE PROCEDURE sp_pcp_inventario_empaque_alta
+
+		@c_interno nvarchar(50),
+		@empaque nvarchar(50),
+		@cantidad float,
+		@ban1 nvarchar(50)
+AS
+BEGIN
+
+	SET NOCOUNT ON;
+
+	 INSERT INTO empaque(c_interno, empaque, cantidad, ban1)
+
+	 VALUES(@c_interno, @empaque, @cantidad, @ban1)
+END
+
+-- =============================================
+-- Autor: Carlos Fabrizio Arriola Carmona
+-- Fecha Creación: 11/Sept/2014
+-- Description: Modificación de Empaque para el modulo de productos, clientes, proveedores.
+-- =============================================
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_pcp_inventario_empaque_eliminar') AND type in (N'P', N'PC'))
+	DROP PROCEDURE dbo.sp_pcp_inventario_empaque_eliminar
+GO
+
+CREATE PROCEDURE sp_pcp_inventario_empaque_eliminar
+
+		@c_interno nvarchar(50)
+AS
+BEGIN
+
+	SET NOCOUNT ON;
+
+	 DELETE empaque
+	 WHERE c_interno = @c_interno
+
+END
 
 -- =============================================
 -- Autor: Carlos Fabrizio Arriola Carmona
