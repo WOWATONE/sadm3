@@ -25,6 +25,7 @@ CREATE PROCEDURE sp_mat_materiales_alta
 	@proveedor nvarchar(50),
 	@propcliente nvarchar(50),
 	@foto nvarchar(200),
+
 	@stockmin float, -- Stock y Movimientos
 	@stockmax float,
 	@inven float,
@@ -32,14 +33,24 @@ CREATE PROCEDURE sp_mat_materiales_alta
 	@cuentacontable nvarchar(50),
 	@desccuentacontable nvarchar(50),
 	@pvf nvarchar(50),
-	@fec_alta datetime,
 	@mod_alta varchar(15),
-	@usu_alta int
+	@usu_alta int,
 
+	@dpto nvarchar(50), -- modif
+	@quien nvarchar(50),
+	@clave nvarchar(50),
+	@fecha datetime,
+	@hora datetime,
+	@modificacion nvarchar(200),
+	@clienteproveedor nvarchar(50),
+	@modulo nvarchar(50)
 AS
 BEGIN
 
 	SET NOCOUNT ON;
+	
+	DECLARE @fechaActualServidor DATETIME
+	SET  @fechaActualServidor = GETDATE()
 
 	 INSERT INTO material
 
@@ -55,7 +66,7 @@ BEGIN
 	   @umedida, @tipomateria, @active, @presentacion, @cantidad,
 	   @comentarios, @cliente, @proveedor, @propcliente, @foto,
 	   @stockmin, @stockmax, @inven, @moneda, @cuentacontable,
-	   @desccuentacontable, @pvf, @fec_alta, @mod_alta, @usu_alta)
+	   @desccuentacontable, @pvf, @fechaActualServidor, @mod_alta, @usu_alta)
 
 	   DECLARE @precioProveedor float 
 	   SET @precioProveedor = CAST(@pvf as nvarchar(max))
@@ -67,8 +78,12 @@ BEGIN
 
 	    VALUES
 	   (@proveedor, @codigo, @propcliente, @cliente, @precioProveedor, 
-		@tipo, @umedida ,@fec_alta, @fec_alta, @mod_alta,
+		@tipo, @umedida ,@fechaActualServidor, @fechaActualServidor, @mod_alta,
 		@usu_alta)
+
+		EXEC sp_movimientos_alta @dpto, @quien, @clave,  @fecha, @hora,
+						    @codigo, @modificacion, 'NA', 'NA', @clienteproveedor,
+						    'NA', 'NA', @modulo, 'NA', 'NA', null, null
 END
 
 -- =============================================
@@ -101,9 +116,17 @@ CREATE PROCEDURE sp_mat_materiales_modificacion
 	@cliente nvarchar(50),
 	@proveedor nvarchar(50),
 	@propcliente nvarchar(50),
-	@fec_mod datetime,
 	@mod_mod varchar(15),
-	@usu_mod int
+	@usu_mod int,
+	--modif
+	@dpto nvarchar(50), -- modif
+	@quien nvarchar(50),
+	@clave nvarchar(50),
+	@fecha datetime,
+	@hora datetime,
+	@modificacion nvarchar(200),
+	@clienteproveedor nvarchar(50),
+	@modulo nvarchar(50)
 
 AS
 BEGIN
@@ -130,10 +153,14 @@ BEGIN
 			cliente = @cliente,
 			proveedor = @proveedor,
 			propcliente = @propcliente,
-			fec_mod = @fec_mod,
+			fec_mod = GETDATE(),
 			mod_mod = @mod_mod,
 			usu_mod = @usu_mod
 
 			WHERE codigo = @codigo
+
+			EXEC sp_movimientos_alta @dpto, @quien, @clave, @fecha, @hora,
+						             @codigo, @modificacion, 'NA', 'NA', @clienteproveedor,
+						             'NA', 'NA', @modulo, 'NA', 'NA', null, null
 
 END
