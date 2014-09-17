@@ -118,7 +118,7 @@ CREATE PROCEDURE sp_mat_materiales_modificacion
 	@propcliente nvarchar(50),
 	@mod_mod varchar(15),
 	@usu_mod int,
-	--modif
+
 	@dpto nvarchar(50), -- modif
 	@quien nvarchar(50),
 	@clave nvarchar(50),
@@ -127,11 +127,13 @@ CREATE PROCEDURE sp_mat_materiales_modificacion
 	@modificacion nvarchar(200),
 	@clienteproveedor nvarchar(50),
 	@modulo nvarchar(50)
-
 AS
 BEGIN
 
 	SET NOCOUNT ON;
+
+	DECLARE @fechaActualServidor DATETIME
+	SET  @fechaActualServidor = GETDATE()
 
 	UPDATE material
 
@@ -153,7 +155,7 @@ BEGIN
 			cliente = @cliente,
 			proveedor = @proveedor,
 			propcliente = @propcliente,
-			fec_mod = GETDATE(),
+			fec_mod = @fechaActualServidor,
 			mod_mod = @mod_mod,
 			usu_mod = @usu_mod
 
@@ -161,6 +163,47 @@ BEGIN
 
 			EXEC sp_movimientos_alta @dpto, @quien, @clave, @fecha, @hora,
 						             @codigo, @modificacion, 'NA', 'NA', @clienteproveedor,
-						             'NA', 'NA', @modulo, 'NA', 'NA', null, null
+						             'NA', 'NA', @modulo, 'NA', 'NA', null, null	
+END
+
+-- =============================================
+-- Autor: Carlos Fabrizio Arriola Carmona
+-- Fecha Creación: 17/Septiembre/2014
+-- Descripción: Modificación de material y proveedor de material para el módulo de Materiales.
+-- =============================================
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_mat_proveedormaterial_alta') AND type in (N'P', N'PC'))
+	DROP PROCEDURE dbo.sp_mat_proveedormaterial_alta
+GO
+
+CREATE PROCEDURE sp_mat_proveedormaterial_alta
+
+	@nombre nvarchar(100),
+	@codigo nvarchar(50),
+	@precio real,
+	@umedida nvarchar(50),
+	@tipo nvarchar(50),
+	@propcliente nvarchar(50),
+	@cliente nvarchar(50),
+	@mod_alta varchar(15),
+	@usu_alta int
+	
+AS
+BEGIN
+
+	SET NOCOUNT ON;
+
+	DECLARE @fechaActualServidor DATETIME
+	SET  @fechaActualServidor = GETDATE()
+
+	INSERT INTO proveedormaterial
+	(nombre, codigo, precio, umedida, tipo,
+	 propcliente, cliente, fechaalta, fec_alta, mod_alta, 
+	 usu_alta)
+
+	VALUES
+	(@nombre, @codigo, @precio, @umedida, @tipo, 
+	 @propcliente, @cliente , @fechaActualServidor, @fechaActualServidor, @mod_alta,
+	 @usu_alta)
 
 END
