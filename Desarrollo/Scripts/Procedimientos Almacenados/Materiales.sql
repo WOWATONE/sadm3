@@ -207,3 +207,119 @@ BEGIN
 	 @usu_alta)
 
 END
+
+-- =============================================
+-- Autor: Carlos Fabrizio Arriola Carmona
+-- Fecha Creación: 19/Septiembre/2014
+-- Descripción: Alta del folio para las ordenes de compra.
+-- =============================================
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_mat_ordencomprafolio_alta') AND type in (N'P', N'PC'))
+	DROP PROCEDURE dbo.sp_mat_ordencomprafolio_alta
+GO
+
+CREATE PROCEDURE sp_mat_ordencomprafolio_alta
+
+	@Tipo VARCHAR(20),
+	@Serie VARCHAR(10),
+	@Consecutivo INT,
+	@mod_mod VARCHAR(40),
+	@usu_mod INT
+
+AS
+BEGIN
+
+	SET NOCOUNT ON;
+
+	INSERT INTO Folios(Tipo, Serie, Consecutivo, fec_mod, mod_mod, usu_mod)
+
+	VALUES(@Tipo, @Serie, @Consecutivo, GETDATE(), @mod_mod, @usu_mod)
+
+END
+
+
+-- =============================================
+-- Autor: Carlos Fabrizio Arriola Carmona
+-- Fecha Creación: 19/Septiembre/2014
+-- Descripción: Actualización del folio para las ordenes de compra.
+-- =============================================
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_mat_ordencomprafolio_modificacion') AND type in (N'P', N'PC'))
+	DROP PROCEDURE dbo.sp_mat_ordencomprafolio_modificacion
+GO
+
+CREATE PROCEDURE sp_mat_ordencomprafolio_modificacion
+
+	@Tipo VARCHAR(20),
+	@Serie VARCHAR(10),
+	@Consecutivo INT,
+	@mod_mod VARCHAR(40),
+	@usu_mod INT
+
+AS
+BEGIN
+
+	SET NOCOUNT ON;
+
+	UPDATE Folios
+
+	SET Consecutivo = @Consecutivo,
+	    fec_mod     = GETDATE(),
+		mod_mod     = @mod_mod,
+		usu_mod     = @usu_mod
+
+	WHERE Serie = @Serie
+
+END
+
+
+-- =============================================
+-- Autor: Carlos Fabrizio Arriola Carmona
+-- Fecha Creación: 19/Septiembre/2014
+-- Descripción: Alta de maestro para la orden de compra.
+-- =============================================
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_mat_ordencompra_alta') AND type in (N'P', N'PC'))
+	DROP PROCEDURE dbo.sp_mat_ordencompra_alta
+GO
+
+CREATE PROCEDURE sp_mat_ordencompra_alta
+
+	@norden nvarchar(50),
+	@estatus nvarchar(50),
+	@tipoorden nvarchar(50),
+	@proveedor nvarchar(50),
+	@dpto nvarchar(50),
+	@condpago nvarchar(50),
+	@confpedido nvarchar(50),
+	@tipocompra nvarchar(50),
+	@fechaped datetime,
+	@fechaent datetime,
+	@moneda nvarchar(50),
+	@comen ntext,
+    @autdcompras nvarchar(50),
+	@autdfinanzas nvarchar(50),
+	@autdproduccion nvarchar(50),
+	@resprecibe nvarchar(50),
+	@subtotal nvarchar(50),
+	@iva nvarchar(50),
+	@totalorden nvarchar(50)
+
+AS
+BEGIN
+
+	SET NOCOUNT ON;
+
+	INSERT INTO ocompra
+	(norden, estatus, tipoorden, proveedor, dpto,
+	 condpago, confpedido, tipocompra, fechaped, fechaent,
+	 moneda, comen, autdcompras, autdfinanzas, autdproduccion,
+	 resprecibe, subtotal, iva, totalorden)
+
+	VALUES
+	(@norden, @estatus, @tipoorden, @proveedor, @dpto,
+	 @condpago, @confpedido, @tipocompra, @fechaped, @fechaent,
+	 @moneda, @comen, @autdcompras, @autdfinanzas, @autdproduccion,
+	 @resprecibe, @subtotal, @iva, @totalorden)
+
+END
