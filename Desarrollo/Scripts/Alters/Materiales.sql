@@ -46,4 +46,10 @@ ALTER TABLE [dbo].proveedormaterial
 ADD usu_mod INT
 GO
 
---agregar identity a num a ocompra
+ALTER TABLE ocompra 
+DROP COLUMN conse
+Go
+
+ALTER TABLE ocompra
+ADD conse INT IDENTITY(1,1)
+Go

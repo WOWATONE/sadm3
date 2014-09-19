@@ -1,16 +1,16 @@
 CREATE TABLE multival_mto
 (
-	id int identity(1, 1),
-	clave_proceso varchar(20),
-	descripcion varchar(140)
+	id INT IDENTITY(1, 1),
+	clave_proceso VARCHAR(20),
+	descripcion VARCHAR(140)
 )
 
 CREATE TABLE multival_det
 (
-	id_det int,
-	valor varchar(100), 
-	descripcion varchar (200),
-	orden int
+	id_det INT,
+	valor VARCHAR(100), 
+	descripcion VARCHAR(200),
+	orden INT
 )
 
 ALTER TABLE dbo.multival_mto
@@ -20,3 +20,14 @@ PRIMARY KEY(id)
 ALTER TABLE dbo.multival_det
 ADD FOREIGN KEY (id_det)
 REFERENCES dbo.multival_mto(id)
+
+
+CREATE TABLE Folios
+(
+	Tipo VARCHAR(20),
+	Serie VARCHAR(10),
+	Consecutivo INT,
+	fec_mod DATETIME,
+	mod_mod VARCHAR(40),
+	usu_mod INT
+)
