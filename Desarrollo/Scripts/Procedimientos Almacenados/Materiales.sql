@@ -272,11 +272,10 @@ BEGIN
 
 END
 
-
 -- =============================================
 -- Autor: Carlos Fabrizio Arriola Carmona
 -- Fecha Creación: 19/Septiembre/2014
--- Descripción: Alta de maestro para la orden de compra.
+-- Descripción: Alta del maestro para la orden de compra.
 -- =============================================
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_mat_ordencompra_alta') AND type in (N'P', N'PC'))
@@ -321,5 +320,89 @@ BEGIN
 	 @condpago, @confpedido, @tipocompra, @fechaped, @fechaent,
 	 @moneda, @comen, @autdcompras, @autdfinanzas, @autdproduccion,
 	 @resprecibe, @subtotal, @iva, @totalorden)
+
+END
+
+-- =============================================
+-- Autor: Carlos Fabrizio Arriola Carmona
+-- Fecha Creación: 19/Septiembre/2014
+-- Descripción: Modificación del maestro para la orden de compra.
+-- =============================================
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_mat_ordencompra_modificacion') AND type in (N'P', N'PC'))
+	DROP PROCEDURE dbo.sp_mat_ordencompra_modificacion
+GO
+
+CREATE PROCEDURE sp_mat_ordencompra_modificacion
+
+	@tipoorden nvarchar(50),
+	@proveedor nvarchar(50),
+	@dpto nvarchar(50),
+	@condpago nvarchar(50),
+	@confpedido nvarchar(50),
+	@tipocompra nvarchar(50),
+	@fechaped datetime,
+	@fechaent datetime,
+	@moneda nvarchar(50),
+	@comen ntext,
+	@subtotal nvarchar(50),
+	@iva nvarchar(50),
+	@totalorden nvarchar(50)
+
+AS
+BEGIN
+
+	SET NOCOUNT ON;
+
+	UPDATE ocompra
+		SET 
+		    tipoorden   = @tipoorden,
+			proveedor   = @proveedor,
+			dpto	    = @dpto,
+			condpago    = @condpago,
+			confpedido  = @confpedido,
+			tipocompra  = @tipocompra,
+			fechaped    = @fechaped,
+			fechaent    = @fechaent,
+			moneda      = @moneda,
+			comen       = @comen,
+			subtotal    = @subtotal,
+			iva         = @iva,
+			totalorden  = @totalorden
+
+		WHERE tipoorden = @tipoorden
+END
+
+-- =============================================
+-- Autor: Carlos Fabrizio Arriola Carmona
+-- Fecha Creación: 19/Septiembre/2014
+-- Descripción: Alta del detalle para la orden de compra.
+-- =============================================
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_mat_ordencompradetalle_alta') AND type in (N'P', N'PC'))
+	DROP PROCEDURE dbo.sp_mat_ordencompradetalle_alta
+GO
+
+CREATE PROCEDURE sp_mat_ordencompradetalle_alta
+
+	@norden nvarchar(50),
+	@cantidad nvarchar(50),
+	@concepto nvarchar(200),
+	@preciouni nvarchar(50),
+	@importedet nvarchar(50),
+	@unimed nvarchar(50)
+
+AS
+BEGIN
+
+	SET NOCOUNT ON;
+
+	INSERT INTO detocompra
+	(norden, cantidad, concepto, preciouni, importedet,
+	 unimed)
+
+	VALUES
+	(@norden, @cantidad, @concepto, @preciouni, @importedet,
+	 @unimed)
 
 END
