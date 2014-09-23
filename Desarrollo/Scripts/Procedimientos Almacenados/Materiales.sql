@@ -220,8 +220,6 @@ GO
 
 CREATE PROCEDURE sp_mat_ordencomprafolio_alta
 
-	@Tipo VARCHAR(20),
-	@Serie VARCHAR(10),
 	@Consecutivo INT,
 	@mod_mod VARCHAR(40),
 	@usu_mod INT
@@ -233,15 +231,14 @@ BEGIN
 
 	INSERT INTO Folios(Tipo, Serie, Consecutivo, fec_mod, mod_mod, usu_mod)
 
-	VALUES(@Tipo, @Serie, @Consecutivo, GETDATE(), @mod_mod, @usu_mod)
+	VALUES('ORDENCOMPRA', 'PO', @Consecutivo, GETDATE(), @mod_mod, @usu_mod)
 
 END
-
 
 -- =============================================
 -- Autor: Carlos Fabrizio Arriola Carmona
 -- Fecha Creación: 19/Septiembre/2014
--- Descripción: Actualización del folio para las ordenes de compra.
+-- Descripción: Actualización del folio para dara de alta las ordenes de compra.
 -- =============================================
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_mat_ordencomprafolio_modificacion') AND type in (N'P', N'PC'))
@@ -250,10 +247,7 @@ GO
 
 CREATE PROCEDURE sp_mat_ordencomprafolio_modificacion
 
-	@Tipo VARCHAR(20),
-	@Serie VARCHAR(10),
 	@Consecutivo INT,
-	@mod_mod VARCHAR(40),
 	@usu_mod INT
 
 AS
@@ -265,12 +259,38 @@ BEGIN
 
 	SET Consecutivo = @Consecutivo,
 	    fec_mod     = GETDATE(),
-		mod_mod     = @mod_mod,
 		usu_mod     = @usu_mod
-
-	WHERE Serie = @Serie
-
+		
+	WHERE Serie     = 'PO'
 END
+
+-- =============================================
+-- Autor: Carlos Fabrizio Arriola Carmona
+-- Fecha Creación: 23/Septiembre/2014
+-- Descripción: Actualización del folio para modificar las ordenes de compra.
+-- =============================================
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_mat_ordencomprafoliomodif_modificacion') AND type in (N'P', N'PC'))
+	DROP PROCEDURE dbo.sp_mat_ordencomprafoliomodif_modificacion
+GO
+
+CREATE PROCEDURE sp_mat_ordencomprafoliomodif_modificacion
+
+	@usu_mod INT
+
+AS
+BEGIN
+
+	SET NOCOUNT ON;
+
+	UPDATE Folios
+
+	SET fec_mod     = GETDATE(),
+		usu_mod     = @usu_mod
+		
+	WHERE Serie     = 'PO'
+END
+
 
 -- =============================================
 -- Autor: Carlos Fabrizio Arriola Carmona
@@ -335,6 +355,7 @@ GO
 
 CREATE PROCEDURE sp_mat_ordencompra_modificacion
 
+	@norden nvarchar(50),
 	@tipoorden nvarchar(50),
 	@proveedor nvarchar(50),
 	@dpto nvarchar(50),
@@ -370,7 +391,32 @@ BEGIN
 			iva         = @iva,
 			totalorden  = @totalorden
 
-		WHERE tipoorden = @tipoorden
+		WHERE norden = @norden
+END
+
+
+-- =============================================
+-- Autor: Carlos Fabrizio Arriola Carmona
+-- Fecha Creación: 19/Septiembre/2014
+-- Descripción: Establece el estado de la orden de compra a cancelado.
+-- =============================================
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_mat_ordencompra_cancelar') AND type in (N'P', N'PC'))
+	DROP PROCEDURE dbo.sp_mat_ordencompra_cancelar
+GO
+
+CREATE PROCEDURE sp_mat_ordencompra_cancelar
+
+	@norden nvarchar(50)
+
+AS
+BEGIN
+
+	SET NOCOUNT ON;
+
+		UPDATE ocompra
+		SET  estatus = 'CANCELADA'
+		WHERE norden = @norden
 END
 
 -- =============================================
@@ -404,5 +450,29 @@ BEGIN
 	VALUES
 	(@norden, @cantidad, @concepto, @preciouni, @importedet,
 	 @unimed)
+
+END
+
+-- =============================================
+-- Autor: Carlos Fabrizio Arriola Carmona
+-- Fecha Creación: 19/Septiembre/2014
+-- Descripción: Baja del detalle para la orden de compra.
+-- =============================================
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_mat_ordencompradetalle_eliminar') AND type in (N'P', N'PC'))
+	DROP PROCEDURE dbo.sp_mat_ordencompradetalle_eliminar
+GO
+
+CREATE PROCEDURE sp_mat_ordencompradetalle_eliminar
+
+	@norden nvarchar(50)
+
+AS
+BEGIN
+
+	SET NOCOUNT ON;
+
+	DELETE detocompra
+    WHERE norden = @norden
 
 END

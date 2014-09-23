@@ -48,8 +48,17 @@ GO
 
 ALTER TABLE ocompra 
 DROP COLUMN conse
-Go
+GO
 
 ALTER TABLE ocompra
 ADD conse INT IDENTITY(1,1)
-Go
+GO
+
+ALTER TABLE detocompra 
+DROP COLUMN conse
+GO
+
+ALTER TABLE detocompra
+ADD conse INT IDENTITY(1,1)
+GO
+
