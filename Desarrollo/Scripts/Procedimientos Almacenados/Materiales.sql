@@ -322,7 +322,8 @@ CREATE PROCEDURE sp_mat_ordencompra_alta
 	@resprecibe nvarchar(50),
 	@subtotal nvarchar(50),
 	@iva nvarchar(50),
-	@totalorden nvarchar(50)
+	@totalorden nvarchar(50),
+	@Elaboro int
 
 AS
 BEGIN
@@ -333,14 +334,13 @@ BEGIN
 	(norden, estatus, tipoorden, proveedor, dpto,
 	 condpago, confpedido, tipocompra, fechaped, fechaent,
 	 moneda, comen, autdcompras, autdfinanzas, autdproduccion,
-	 resprecibe, subtotal, iva, totalorden)
+	 resprecibe, subtotal, iva, totalorden, Elaboro)
 
 	VALUES
 	(@norden, @estatus, @tipoorden, @proveedor, @dpto,
 	 @condpago, @confpedido, @tipocompra, @fechaped, @fechaent,
 	 @moneda, @comen, @autdcompras, @autdfinanzas, @autdproduccion,
-	 @resprecibe, @subtotal, @iva, @totalorden)
-
+	 @resprecibe, @subtotal, @iva, @totalorden, @Elaboro)
 END
 
 -- =============================================
