@@ -62,3 +62,15 @@ ALTER TABLE detocompra
 ADD conse INT IDENTITY(1,1)
 GO
 
+ALTER TABLE ocompra
+ADD Elaboro INT
+GO
+
+ALTER TABLE Permisos
+ADD CONSTRAINT FK_ModuloSistemaID FOREIGN KEY (ModuloSistemaId) REFERENCES ModulosSistema(ModuloSistemaId)
+GO
+
+
+ALTER TABLE PermisosUsuarios
+ADD CONSTRAINT FK_IdPermiso FOREIGN KEY (IdPermiso) REFERENCES Permisos(PermisoId)
+GO
