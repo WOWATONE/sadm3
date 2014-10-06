@@ -476,3 +476,103 @@ BEGIN
     WHERE norden = @norden
 
 END
+
+-- =============================================
+-- Autor: Carlos Fabrizio Arriola Carmona
+-- Fecha Creación: 01/Octubre/2014
+-- Descripción: Cambio de estatus para autorizar compras.
+-- =============================================
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_mat_ordencompra_autorizar_compras') AND type in (N'P', N'PC'))
+	DROP PROCEDURE dbo.sp_mat_ordencompra_autorizar_compras
+GO
+
+CREATE PROCEDURE sp_mat_ordencompra_autorizar_compras
+
+	@norden nvarchar(50)
+
+AS
+BEGIN
+
+	SET NOCOUNT ON;
+
+	UPDATE ocompra
+		  SET  autdcompras = 'OK'
+		  WHERE norden = @norden
+
+END
+
+-- =============================================
+-- Autor: Carlos Fabrizio Arriola Carmona
+-- Fecha Creación: 01/Octubre/2014
+-- Descripción: Cambio de estatus para autorizar finanzas.
+-- =============================================
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_mat_ordencompra_autorizar_finanzas') AND type in (N'P', N'PC'))
+	DROP PROCEDURE dbo.sp_mat_ordencompra_autorizar_finanzas
+GO
+
+CREATE PROCEDURE sp_mat_ordencompra_autorizar_finanzas
+
+	@norden nvarchar(50)
+
+AS
+BEGIN
+
+	SET NOCOUNT ON;
+
+	UPDATE ocompra
+		  SET  autdfinanzas = 'OK'
+		  WHERE norden = @norden
+
+END
+
+-- =============================================
+-- Autor: Carlos Fabrizio Arriola Carmona
+-- Fecha Creación: 01/Octubre/2014
+-- Descripción: Cambio de estatus para autorizar producción.
+-- =============================================
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_mat_ordencompra_autorizar_produccion') AND type in (N'P', N'PC'))
+	DROP PROCEDURE dbo.sp_mat_ordencompra_autorizar_produccion
+GO
+
+CREATE PROCEDURE sp_mat_ordencompra_autorizar_produccion
+
+	@norden nvarchar(50)
+
+AS
+BEGIN
+
+	SET NOCOUNT ON;
+
+	UPDATE ocompra
+		  SET  autdproduccion = 'OK'
+		  WHERE norden = @norden
+
+END
+
+-- =============================================
+-- Autor: Carlos Fabrizio Arriola Carmona
+-- Fecha Creación: 01/Octubre/2014
+-- Descripción: Cambio de estatus de la orden de compra.
+-- =============================================
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_mat_ordencompra_estatus_porconfirmar') AND type in (N'P', N'PC'))
+	DROP PROCEDURE dbo.sp_mat_ordencompra_estatus_porconfirmar
+GO
+
+CREATE PROCEDURE sp_mat_ordencompra_estatus_porconfirmar
+
+	@norden nvarchar(50)
+
+AS
+BEGIN
+
+	SET NOCOUNT ON;
+
+    UPDATE ocompra
+		  SET estatus = 'X CONFIRMAR'
+		  WHERE norden = @norden
+
+END
