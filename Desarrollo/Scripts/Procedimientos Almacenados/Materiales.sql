@@ -576,3 +576,76 @@ BEGIN
 		  WHERE norden = @norden
 
 END
+
+-- =============================================
+-- Autor: Carlos Fabrizio Arriola Carmona
+-- Fecha Creación: 07/Octubre/2014
+-- Descripción: Cambio de estatus de la orden de compra.
+-- =============================================
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_mat_ordencompra_estatus_porrecibir') AND type in (N'P', N'PC'))
+	DROP PROCEDURE dbo.sp_mat_ordencompra_estatus_porrecibir
+GO
+
+CREATE PROCEDURE sp_mat_ordencompra_estatus_porrecibir
+	@norden nvarchar(50)
+AS
+BEGIN
+
+	SET NOCOUNT ON;
+
+    UPDATE ocompra
+		  SET estatus = 'X RECIBIR'
+		  WHERE norden = @norden
+
+END
+
+-- =============================================
+-- Autor: Carlos Fabrizio Arriola Carmona
+-- Fecha Creación: 06/Octubre/2014
+-- Descripción: Cambio de estatus de la orden de compra.
+-- =============================================
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_mat_ordencompra_estatus_porpagar') AND type in (N'P', N'PC'))
+	DROP PROCEDURE dbo.sp_mat_ordencompra_estatus_porpagar
+GO
+
+CREATE PROCEDURE sp_mat_ordencompra_estatus_porpagar
+
+	@norden nvarchar(50)
+
+AS
+BEGIN
+
+	SET NOCOUNT ON;
+
+    UPDATE ocompra
+		  SET estatus = 'X PAGAR',
+		  fecharecep  = GETDATE()
+		  WHERE norden = @norden
+
+END
+
+-- =============================================
+-- Autor: Carlos Fabrizio Arriola Carmona
+-- Fecha Creación: 06/Octubre/2014
+-- Descripción: Cambio de estatus de la orden de compra.
+-- =============================================
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_mat_ordencompra_estatus_pagada') AND type in (N'P', N'PC'))
+	DROP PROCEDURE dbo.sp_mat_ordencompra_estatus_pagada
+GO
+
+CREATE PROCEDURE sp_mat_ordencompra_estatus_pagada
+
+	@norden nvarchar(50)
+
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+    UPDATE ocompra
+		  SET estatus = 'PAGADA'
+		  WHERE norden = @norden
+
+END
