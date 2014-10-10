@@ -70,7 +70,17 @@ ALTER TABLE Permisos
 ADD CONSTRAINT FK_ModuloSistemaID FOREIGN KEY (ModuloSistemaId) REFERENCES ModulosSistema(ModuloSistemaId)
 GO
 
-
 ALTER TABLE PermisosUsuarios
 ADD CONSTRAINT FK_IdPermiso FOREIGN KEY (IdPermiso) REFERENCES Permisos(PermisoId)
 GO
+
+ALTER TABLE detocompra 
+ADD CantidadPedida NVARCHAR(50)
+GO
+
+ALTER TABLE detocompra 
+ADD Lote VARCHAR(30)
+GO
+
+ALTER TABLE detocompra
+ADD NumeroItem INT

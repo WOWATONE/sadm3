@@ -445,11 +445,11 @@ BEGIN
 
 	INSERT INTO detocompra
 	(norden, cantidad, concepto, preciouni, importedet,
-	 unimed)
+	 unimed, CantidadPedida)
 
 	VALUES
 	(@norden, @cantidad, @concepto, @preciouni, @importedet,
-	 @unimed)
+	 @unimed, @cantidad)
 
 END
 
@@ -646,6 +646,29 @@ BEGIN
 
     UPDATE ocompra
 		  SET estatus = 'PAGADA'
+		  WHERE norden = @norden
+
+END
+
+-- =============================================
+-- Autor: Carlos Fabrizio Arriola Carmona
+-- Fecha Creación: 10/Octubre/2014
+-- Descripción: Cambio de estatus de la orden de compra.
+-- =============================================
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_mat_ordencompra_estatus_historica') AND type in (N'P', N'PC'))
+	DROP PROCEDURE dbo.sp_mat_ordencompra_estatus_historica
+GO
+
+CREATE PROCEDURE sp_mat_ordencompra_estatus_historica
+
+	@norden nvarchar(50)
+
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+    UPDATE ocompra
+		  SET estatus = 'HISTORICA'
 		  WHERE norden = @norden
 
 END
