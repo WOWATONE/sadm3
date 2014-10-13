@@ -168,6 +168,30 @@ END
 
 -- =============================================
 -- Autor: Carlos Fabrizio Arriola Carmona
+-- Fecha Creación: 13/Octubre/2014
+-- Descripción: Baja de la orden de compra.
+-- =============================================
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_mat_ordencompra_eliminar') AND type in (N'P', N'PC'))
+	DROP PROCEDURE dbo.sp_mat_ordencompra_eliminar
+GO
+
+CREATE PROCEDURE sp_mat_ordencompra_eliminar
+
+	@norden nvarchar(50)
+
+AS
+BEGIN
+
+	SET NOCOUNT ON;
+
+	DELETE ocompra
+    WHERE norden = @norden
+
+END
+
+-- =============================================
+-- Autor: Carlos Fabrizio Arriola Carmona
 -- Fecha Creación: 17/Septiembre/2014
 -- Descripción: Modificación de material y proveedor de material para el módulo de Materiales.
 -- =============================================
@@ -437,6 +461,7 @@ CREATE PROCEDURE sp_mat_ordencompradetalle_alta
 	@preciouni nvarchar(50),
 	@importedet nvarchar(50),
 	@unimed nvarchar(50),
+	@CantidadPedida nvarchar(50),
 	@Lote varchar(30),
 	@NumeroItem int
 
@@ -451,7 +476,7 @@ BEGIN
 
 	VALUES
 	(@norden, @cantidad, @concepto, @preciouni, @importedet,
-	 @unimed, @cantidad, @Lote, @NumeroItem)
+	 @unimed, @CantidadPedida, @Lote, @NumeroItem)
 
 END
 
@@ -612,7 +637,7 @@ IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_mat_o
 	DROP PROCEDURE dbo.sp_mat_ordencompra_estatus_porpagar
 GO
 
-CREATE PROCEDURE sp_mat_ordencompra_estatus_porpagar
+CREATE PROCEDURE		
 
 	@norden nvarchar(50)
 
