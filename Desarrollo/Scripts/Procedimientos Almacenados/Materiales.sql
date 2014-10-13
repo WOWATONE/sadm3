@@ -436,7 +436,9 @@ CREATE PROCEDURE sp_mat_ordencompradetalle_alta
 	@concepto nvarchar(200),
 	@preciouni nvarchar(50),
 	@importedet nvarchar(50),
-	@unimed nvarchar(50)
+	@unimed nvarchar(50),
+	@Lote varchar(30),
+	@NumeroItem int
 
 AS
 BEGIN
@@ -445,11 +447,11 @@ BEGIN
 
 	INSERT INTO detocompra
 	(norden, cantidad, concepto, preciouni, importedet,
-	 unimed, CantidadPedida)
+	 unimed, CantidadPedida, Lote, NumeroItem)
 
 	VALUES
 	(@norden, @cantidad, @concepto, @preciouni, @importedet,
-	 @unimed, @cantidad)
+	 @unimed, @cantidad, @Lote, @NumeroItem)
 
 END
 
