@@ -1,4 +1,4 @@
-5-- =============================================
+-- =============================================
 -- Autor: Carlos Fabrizio Arriola Carmona
 -- Fecha Creación: 22/Julio/2014
 -- Description: Alta de productos para el módulo de productos, clientes, proveedores.
