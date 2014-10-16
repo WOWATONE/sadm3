@@ -84,3 +84,20 @@ GO
 
 ALTER TABLE detocompra
 ADD NumeroItem INT
+GO
+
+ALTER TABLE ocompra
+ADD CONSTRAINT PK_ocompra_conse PRIMARY KEY CLUSTERED (conse)
+GO
+
+ALTER TABLE detocompra
+ADD CONSTRAINT PK_detocompra_conse PRIMARY KEY CLUSTERED (conse)
+GO
+
+ALTER TABLE pw
+ALTER COLUMN num_empt INT
+GO
+
+ALTER TABLE detocompra
+ADD mod_alta VARCHAR(40)
+GO

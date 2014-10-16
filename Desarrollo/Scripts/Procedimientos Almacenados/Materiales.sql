@@ -85,6 +85,7 @@ BEGIN
 						    @codigo, @modificacion, 'NA', 'NA', @clienteproveedor,
 						    'NA', 'NA', @modulo, 'NA', 'NA', null, null
 END
+GO
 
 -- =============================================
 -- Autor: Carlos Fabrizio Arriola Carmona
@@ -165,6 +166,7 @@ BEGIN
 						             @codigo, @modificacion, 'NA', 'NA', @clienteproveedor,
 						             'NA', 'NA', @modulo, 'NA', 'NA', null, null	
 END
+GO
 
 -- =============================================
 -- Autor: Carlos Fabrizio Arriola Carmona
@@ -189,6 +191,7 @@ BEGIN
     WHERE norden = @norden
 
 END
+GO
 
 -- =============================================
 -- Autor: Carlos Fabrizio Arriola Carmona
@@ -231,6 +234,7 @@ BEGIN
 	 @usu_alta)
 
 END
+GO
 
 -- =============================================
 -- Autor: Carlos Fabrizio Arriola Carmona
@@ -258,6 +262,7 @@ BEGIN
 	VALUES('ORDENCOMPRA', 'PO', @Consecutivo, GETDATE(), @mod_mod, @usu_mod)
 
 END
+GO
 
 -- =============================================
 -- Autor: Carlos Fabrizio Arriola Carmona
@@ -287,6 +292,7 @@ BEGIN
 		
 	WHERE Serie     = 'PO'
 END
+GO
 
 -- =============================================
 -- Autor: Carlos Fabrizio Arriola Carmona
@@ -314,7 +320,7 @@ BEGIN
 		
 	WHERE Serie     = 'PO'
 END
-
+GO
 
 -- =============================================
 -- Autor: Carlos Fabrizio Arriola Carmona
@@ -366,6 +372,7 @@ BEGIN
 	 @moneda, @comen, @autdcompras, @autdfinanzas, @autdproduccion,
 	 @resprecibe, @subtotal, @iva, @totalorden, @Elaboro)
 END
+GO
 
 -- =============================================
 -- Autor: Carlos Fabrizio Arriola Carmona
@@ -417,7 +424,7 @@ BEGIN
 
 		WHERE norden = @norden
 END
-
+GO
 
 -- =============================================
 -- Autor: Carlos Fabrizio Arriola Carmona
@@ -442,6 +449,7 @@ BEGIN
 		SET  estatus = 'CANCELADA'
 		WHERE norden = @norden
 END
+GO
 
 -- =============================================
 -- Autor: Carlos Fabrizio Arriola Carmona
@@ -479,6 +487,7 @@ BEGIN
 	 @unimed, @CantidadPedida, @Lote, @NumeroItem)
 
 END
+GO
 
 -- =============================================
 -- Autor: Carlos Fabrizio Arriola Carmona
@@ -503,6 +512,7 @@ BEGIN
     WHERE norden = @norden
 
 END
+GO
 
 -- =============================================
 -- Autor: Carlos Fabrizio Arriola Carmona
@@ -528,6 +538,7 @@ BEGIN
 		  WHERE norden = @norden
 
 END
+GO
 
 -- =============================================
 -- Autor: Carlos Fabrizio Arriola Carmona
@@ -553,6 +564,7 @@ BEGIN
 		  WHERE norden = @norden
 
 END
+GO
 
 -- =============================================
 -- Autor: Carlos Fabrizio Arriola Carmona
@@ -578,6 +590,7 @@ BEGIN
 		  WHERE norden = @norden
 
 END
+GO
 
 -- =============================================
 -- Autor: Carlos Fabrizio Arriola Carmona
@@ -603,6 +616,7 @@ BEGIN
 		  WHERE norden = @norden
 
 END
+GO
 
 -- =============================================
 -- Autor: Carlos Fabrizio Arriola Carmona
@@ -626,6 +640,7 @@ BEGIN
 		  WHERE norden = @norden
 
 END
+GO
 
 -- =============================================
 -- Autor: Carlos Fabrizio Arriola Carmona
@@ -637,7 +652,7 @@ IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_mat_o
 	DROP PROCEDURE dbo.sp_mat_ordencompra_estatus_porpagar
 GO
 
-CREATE PROCEDURE		
+CREATE PROCEDURE sp_mat_ordencompra_estatus_porpagar		
 
 	@norden nvarchar(50)
 
@@ -652,6 +667,7 @@ BEGIN
 		  WHERE norden = @norden
 
 END
+GO
 
 -- =============================================
 -- Autor: Carlos Fabrizio Arriola Carmona
@@ -676,6 +692,7 @@ BEGIN
 		  WHERE norden = @norden
 
 END
+GO
 
 -- =============================================
 -- Autor: Carlos Fabrizio Arriola Carmona
@@ -699,3 +716,4 @@ BEGIN
 		  WHERE norden = @norden
 
 END
+GO

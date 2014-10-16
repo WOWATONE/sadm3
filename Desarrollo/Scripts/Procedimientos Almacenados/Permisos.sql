@@ -1,7 +1,7 @@
 -- =============================================
 -- Autor: Carlos Fabrizio Arriola Carmona
 -- Fecha Creación: 14/Octubre/2014
--- Description: Alta de permisos.
+-- Descripción: Alta de permisos.
 -- =============================================
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_permisos_permiso_alta') AND type in (N'P', N'PC'))
@@ -56,7 +56,7 @@ END
 -- =============================================
 -- Autor: Carlos Fabrizio Arriola Carmona
 -- Fecha Creación: 14/Octubre/2014
--- Description: Baja de permisos.
+-- Descripción: Baja de permisos.
 -- =============================================
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_permisos_permiso_eliminar') AND type in (N'P', N'PC'))
@@ -79,7 +79,7 @@ END
 -- =============================================
 -- Autor: Carlos Fabrizio Arriola Carmona
 -- Fecha Creación: 14/Octubre/2014
--- Description: Alta de permisos por usuario.
+-- Descripción: Alta de permisos por usuario.
 -- =============================================
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_permisos_permiso_alta') AND type in (N'P', N'PC'))
@@ -105,7 +105,7 @@ END
 -- =============================================
 -- Autor: Carlos Fabrizio Arriola Carmona
 -- Fecha Creación: 14/Octubre/2014
--- Description: Modificación de permisos por usuario.
+-- Descripción: Modificación de permisos por usuario.
 -- =============================================
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_permisos_permiso_modificacion') AND type in (N'P', N'PC'))
@@ -135,7 +135,7 @@ END
 -- =============================================
 -- Autor: Carlos Fabrizio Arriola Carmona
 -- Fecha Creación: 14/Octubre/2014
--- Description: Baja de permisos por usuario.
+-- Descripción: Baja de permisos por usuario.
 -- =============================================
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_permisos_permiso_eliminar') AND type in (N'P', N'PC'))
