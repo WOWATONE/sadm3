@@ -353,7 +353,8 @@ CREATE PROCEDURE sp_mat_ordencompra_alta
 	@subtotal nvarchar(50),
 	@iva nvarchar(50),
 	@totalorden nvarchar(50),
-	@Elaboro int
+	@Elaboro int,
+	@FechaEntrada datetime
 
 AS
 BEGIN
@@ -364,13 +365,15 @@ BEGIN
 	(norden, estatus, tipoorden, proveedor, dpto,
 	 condpago, confpedido, tipocompra, fechaped, fechaent,
 	 moneda, comen, autdcompras, autdfinanzas, autdproduccion,
-	 resprecibe, subtotal, iva, totalorden, Elaboro)
+	 resprecibe, subtotal, iva, totalorden, Elaboro,
+	 FechaEntrada)
 
 	VALUES
 	(@norden, @estatus, @tipoorden, @proveedor, @dpto,
 	 @condpago, @confpedido, @tipocompra, @fechaped, @fechaent,
 	 @moneda, @comen, @autdcompras, @autdfinanzas, @autdproduccion,
-	 @resprecibe, @subtotal, @iva, @totalorden, @Elaboro)
+	 @resprecibe, @subtotal, @iva, @totalorden, @Elaboro,
+	 @FechaEntrada)
 END
 GO
 
@@ -471,8 +474,7 @@ CREATE PROCEDURE sp_mat_ordencompradetalle_alta
 	@unimed nvarchar(50),
 	@CantidadPedida nvarchar(50),
 	@Lote varchar(30),
-	@NumeroItem int,
-	@Ubicacion nvarchar(50)
+	@NumeroItem int
 
 
 AS
@@ -482,11 +484,11 @@ BEGIN
 
 	INSERT INTO detocompra
 	(norden, cantidad, concepto, preciouni, importedet,
-	 unimed, CantidadPedida, Lote, NumeroItem, Ubicacion)
+	 unimed, CantidadPedida, Lote, NumeroItem)
 	 
 	VALUES
 	(@norden, @cantidad, @concepto, @preciouni, @importedet,
-	 @unimed, @CantidadPedida, @Lote, @NumeroItem, @Ubicacion)
+	 @unimed, @CantidadPedida, @Lote, @NumeroItem)
 
 END
 GO
@@ -656,7 +658,8 @@ GO
 
 CREATE PROCEDURE sp_mat_ordencompra_estatus_porpagar		
 
-	@norden nvarchar(50)
+	@norden nvarchar(50),
+	@FechaEntrada datetime
 
 AS
 BEGIN
@@ -665,7 +668,7 @@ BEGIN
 
     UPDATE ocompra
 		  SET estatus = 'X PAGAR',
-		  fecharecep  = GETDATE()
+		  @FechaEntrada  = @FechaEntrada
 		  WHERE norden = @norden
 
 END
