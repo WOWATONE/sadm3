@@ -102,6 +102,5 @@ ALTER TABLE detocompra
 ADD mod_alta VARCHAR(40)
 GO
 
-ALTER TABLE detocompra
-ADD Ubicacion NVARCHAR(50)
-GO
+ALTER TABLE ocompra
+ADD FechaEntrada DATETIME
