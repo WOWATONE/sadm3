@@ -474,8 +474,10 @@ CREATE PROCEDURE sp_mat_ordencompradetalle_alta
 	@unimed nvarchar(50),
 	@CantidadPedida nvarchar(50),
 	@Lote varchar(30),
-	@NumeroItem int
-
+	@NumeroItem int,
+	@ImporteSD nvarchar(50),
+	@Descuento decimal(5,2),
+	@CodigoMaterial nvarchar(200)
 
 AS
 BEGIN
@@ -484,11 +486,13 @@ BEGIN
 
 	INSERT INTO detocompra
 	(norden, cantidad, concepto, preciouni, importedet,
-	 unimed, CantidadPedida, Lote, NumeroItem)
+	 unimed, CantidadPedida, Lote, NumeroItem, ImporteSD,
+	 Descuento, CodigoMaterial)
 	 
 	VALUES
 	(@norden, @cantidad, @concepto, @preciouni, @importedet,
-	 @unimed, @CantidadPedida, @Lote, @NumeroItem)
+	 @unimed, @CantidadPedida, @Lote, @NumeroItem, @ImporteSD,
+	 @Descuento, @CodigoMaterial)
 
 END
 GO
@@ -668,7 +672,7 @@ BEGIN
 
     UPDATE ocompra
 		  SET estatus = 'X PAGAR',
-		  @FechaEntrada  = @FechaEntrada
+		  FechaEntrada  = @FechaEntrada
 		  WHERE norden = @norden
 
 END
@@ -704,6 +708,7 @@ GO
 -- Fecha Creación: 10/Octubre/2014
 -- Descripción: Cambio de estatus de la orden de compra.
 -- =============================================
+
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_mat_ordencompra_estatus_historica') AND type in (N'P', N'PC'))
 	DROP PROCEDURE dbo.sp_mat_ordencompra_estatus_historica
 GO
@@ -719,6 +724,32 @@ BEGIN
     UPDATE ocompra
 		  SET estatus = 'HISTORICA'
 		  WHERE norden = @norden
+
+END
+GO
+
+-- =============================================
+-- Autor: Carlos Fabrizio Arriola Carmona
+-- Fecha Creación: 24/Octubre/2014
+-- Descripción: Asigna la ubicación al material. 
+-- =============================================
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_mat_asignar_ubicacion_rmp01') AND type in (N'P', N'PC'))
+	DROP PROCEDURE dbo.sp_mat_asignar_ubicacion_rmp01
+GO
+
+CREATE PROCEDURE sp_mat_asignar_ubicacion_rmp01
+
+	@conse2    INT,
+	@ubicacion NVARCHAR(50)
+
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+    UPDATE datosv
+		  SET ubicacion = @ubicacion
+		  WHERE conse2 = @conse2
 
 END
 GO

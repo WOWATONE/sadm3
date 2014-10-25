@@ -27,7 +27,8 @@ CREATE PROCEDURE sp_datosv_alta
 	@ubicacion nvarchar(50),
 	@ban1 nvarchar(50),
 	@ban2 nvarchar(50),
-	@ban3 nvarchar(50)
+	@ban3 nvarchar(50),
+	@LoteInterno nvarchar(50)
 	
 AS
 BEGIN
@@ -39,13 +40,13 @@ BEGIN
 	(conse, material, cantidad, fecha, proveedor,
 	 entrada, codigo, lprove, norden, stockv,
 	 inven, estado, comentarios, ordenfabricacion, ubicacion,
-	 ban1, ban2, ban3)
+	 ban1, ban2, ban3, LoteInterno)
 
 	 VALUES
 
 	 (@conse, @material, @cantidad, @fecha, @proveedor,
 	  @entrada, @codigo, @lprove, @norden, @stockv,
 	  @inven, @estado, @comentarios, @ordenfabricacion, @ubicacion,
-	  @ban1, @ban2, @ban3)
+	  @ban1, @ban2, @ban3, @LoteInterno)
 
 END

@@ -104,3 +104,20 @@ GO
 
 ALTER TABLE ocompra
 ADD FechaEntrada DATETIME
+GO
+
+ALTER TABLE detocompra
+ADD ImporteSD NVARCHAR(50)
+GO
+
+ALTER TABLE detocompra
+ADD Descuento DECIMAL(5, 2)
+GO
+
+ALTER TABLE detocompra
+ADD CodigoMaterial NVARCHAR(200)
+GO
+
+ALTER TABLE datosv
+ADD LoteInterno NVARCHAR(50)
+GO
