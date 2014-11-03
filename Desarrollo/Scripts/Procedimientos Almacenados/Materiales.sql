@@ -11,6 +11,7 @@ GO
 CREATE PROCEDURE sp_mat_materiales_alta
 
 	@codigo nvarchar(50),
+	@Categoria varchar(20),
 	@nombre nvarchar(200),
 	@tipo   nvarchar(50),
 	@caducidad nvarchar(50),
@@ -54,7 +55,7 @@ BEGIN
 
 	 INSERT INTO material
 
-	 (codigo, nombre, tipo, caducidad, color,
+	 (codigo, Categoria, nombre, tipo, caducidad, color,
 	  umedida, tipomateria, active, presentacion, cantidad,
 	  comentarios, cliente, proveedor, propcliente, foto,
 	  stockmin, stockmax, inven, moneda, cuentacontable,
@@ -62,7 +63,7 @@ BEGIN
 
 	  VALUES
 
-	  (@codigo, @nombre, @tipo, @caducidad, @color,
+	  (@codigo, @Categoria, @nombre, @tipo, @caducidad, @color,
 	   @umedida, @tipomateria, @active, @presentacion, @cantidad,
 	   @comentarios, @cliente, @proveedor, @propcliente, @foto,
 	   @stockmin, @stockmax, @inven, @moneda, @cuentacontable,
@@ -100,6 +101,7 @@ GO
 CREATE PROCEDURE sp_mat_materiales_modificacion
 
 	@codigo nvarchar(50),
+	@Categoria varchar(20),
 	@caducidad nvarchar(50),
 	@tipomateria nvarchar(50),
 	@active nvarchar(50),
@@ -140,6 +142,7 @@ BEGIN
 
 		SET 
 			caducidad = @caducidad,
+			Categoria = @Categoria,
 			tipomateria = @tipomateria,
 			active = @active,
 			presentacion = @presentacion,
@@ -750,6 +753,157 @@ BEGIN
     UPDATE datosv
 		  SET ubicacion = @ubicacion
 		  WHERE conse2 = @conse2
+
+END
+GO
+
+-- =============================================
+-- Autor: Carlos Fabrizio Arriola Carmona
+-- Fecha Creación: 28/Octubre/2014
+-- Descripción: Asigna la disposición del material.
+-- =============================================
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_mat_asignar_conformidad') AND type in (N'P', N'PC'))
+	DROP PROCEDURE dbo.sp_mat_asignar_conformidad
+GO
+
+CREATE PROCEDURE sp_mat_asignar_conformidad
+
+	@conse2    INT,
+	@stockv	   NVARCHAR(50),
+	@estado	   NVARCHAR(50)
+
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+    UPDATE datosv
+	SET   stockv   = @stockv,
+		  estado   = @estado
+	WHERE conse2   = @conse2
+
+END
+GO
+
+-- =============================================
+-- Autor: Carlos Fabrizio Arriola Carmona
+-- Fecha Creación: 28/Octubre/2014
+-- Descripción: Registro recivo de materiales.
+-- =============================================
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_mat_registro_recivo_materiales') AND type in (N'P', N'PC'))
+	DROP PROCEDURE dbo.sp_mat_registro_recivo_materiales
+GO
+
+CREATE PROCEDURE sp_mat_registro_recivo_materiales
+
+	@registro		 NVARCHAR(50),
+	@entrada		 NVARCHAR(50),
+	@aprobadopor	 NVARCHAR(50),
+	@estatus		 NVARCHAR(50),
+	@almacen		 NVARCHAR(50),
+	@derogacion		 NVARCHAR(50),
+	@fechaderogacion DATETIME,
+	@fichanc		 NVARCHAR (50),
+	@fecha			 DATETIME,
+	@ban1			 NVARCHAR(50),
+	@ban2			 NVARCHAR(50),
+	@ban3			 NVARCHAR(50)
+
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	INSERT INTO registrorecmat
+	(registro, entrada, aprobadopor, estatus, almacen,
+	 derogacion, fechaderogacion, fichanc, fecha, ban1,
+	 ban2, ban3)
+	 
+	VALUES
+	(@registro, @entrada, @aprobadopor, @estatus, @almacen,
+	 @derogacion, @fechaderogacion, @fichanc, @fecha, @ban1,
+	 @ban2, @ban3)
+
+END
+GO
+
+-- =============================================
+-- Autor: Carlos Fabrizio Arriola Carmona
+-- Fecha Creación: 01/Noviembre/2014
+-- Description: Agrega un registro a la tabla silo.
+-- =============================================
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_mat_alta_silo') AND type in (N'P', N'PC'))
+	DROP PROCEDURE dbo.sp_mat_alta_silo
+GO
+
+CREATE PROCEDURE sp_mat_alta_silo
+
+	@codigosilo			NVARCHAR(50),
+	@tequipo_codigo		NVARCHAR(50),
+	@estatus			NVARCHAR(50),
+	@material_codigo	NVARCHAR(50),
+	@cargainicial		INT,
+	@inven				INT,
+	@producto_c_interno NVARCHAR(50),
+	@fechacarga			DATETIME,
+	@datosv_lprove		NVARCHAR(50),
+	@ordenfabricacion   NVARCHAR(50),
+	@material_tipo		NVARCHAR(50),
+	@descripcion		NTEXT,
+	@ban1				NVARCHAR(50),
+	@ban2				NVARCHAR(50)
+
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	INSERT INTO silo
+	(codigosilo, tequipo_codigo, estatus, material_codigo, cargainicial,
+	 inven, producto_c_interno, fechacarga, datosv_lprove, ordenfabricacion,
+	 material_tipo, descripcion, ban1, ban2) 
+
+	 VALUES
+	(@codigosilo, @tequipo_codigo, @estatus, @material_codigo, @cargainicial,
+	 @inven, @producto_c_interno, @fechacarga, @datosv_lprove, @ordenfabricacion,
+	 @material_tipo, @descripcion, @ban1, @ban2) 
+
+END
+GO
+
+-- =============================================
+-- Autor: Carlos Fabrizio Arriola Carmona
+-- Fecha Creación: 01/Noviembre/2014
+-- Description: Modifica un registro a la tabla silo.
+-- =============================================
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_mat_modificacion_silo') AND type in (N'P', N'PC'))
+	DROP PROCEDURE dbo.sp_mat_modificacion_silo
+GO
+
+CREATE PROCEDURE sp_mat_modificacion_silo
+
+	@codigosilo			NVARCHAR(50),
+	@estatus			NVARCHAR(50),
+	@material_codigo	NVARCHAR(50),
+	@material_tipo		NVARCHAR(50),
+	@cargainicial		INT,
+	@inven				INT,
+	@datosv_lprove		NVARCHAR(50)
+
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+    UPDATE silo
+	SET    estatus         = @estatus,
+		   material_codigo = @material_codigo,
+		   material_tipo   = @material_tipo,
+		   cargainicial    = @cargainicial,
+		   inven		   = @inven,
+		   datosv_lprove   = @datosv_lprove
+
+	WHERE codigosilo = @codigosilo
 
 END
 GO

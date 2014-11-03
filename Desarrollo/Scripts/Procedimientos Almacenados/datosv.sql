@@ -50,3 +50,31 @@ BEGIN
 	  @ban1, @ban2, @ban3, @LoteInterno)
 
 END
+
+-- =============================================
+-- Autor: Carlos Fabrizio Arriola Carmona
+-- Fecha Creación: 16/Octubre/2014
+-- Descripción: Modificación de registros para la tabla datosv cuando se pasa a silo de producción.
+-- =============================================
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_datosv_modificacion') AND type in (N'P', N'PC'))
+	DROP PROCEDURE dbo.sp_datosv_modificacion
+GO
+
+CREATE PROCEDURE sp_datosv_modificacion
+
+	@conse2		INT,
+	@stockv		NVARCHAR(50),
+	@ubicacion	NVARCHAR(50)
+
+AS
+BEGIN
+
+	SET NOCOUNT ON;
+
+	UPDATE  datosv
+			SET   stockv    = @stockv,
+			      ubicacion = @ubicacion
+			WHERE conse2    = @conse2
+END
+GO

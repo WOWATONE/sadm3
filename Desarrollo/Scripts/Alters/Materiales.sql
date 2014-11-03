@@ -121,3 +121,7 @@ GO
 ALTER TABLE datosv
 ADD LoteInterno NVARCHAR(50)
 GO
+
+ALTER TABLE material
+ADD Categoria VARCHAR(20)
+GO
