@@ -45,6 +45,4 @@ BEGIN
        @codigo, @modificacion, @ordenfabricacion, @ordencliente, @clienteproveedor,
        @ubicacion, @lote, @modulo, @cantidad, @almacen,
        @ban1, @ban2)
-
-
 END
