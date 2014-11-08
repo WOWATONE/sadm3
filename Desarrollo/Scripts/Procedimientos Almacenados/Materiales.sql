@@ -100,74 +100,69 @@ GO
 
 CREATE PROCEDURE sp_mat_materiales_modificacion
 
-	@codigo nvarchar(50),
-	@Categoria varchar(20),
-	@caducidad nvarchar(50),
-	@tipomateria nvarchar(50),
-	@active nvarchar(50),
-	@presentacion nvarchar(50),
-	@cantidad nvarchar(50),
-	@comentarios nvarchar(50),
-	@foto nvarchar(200),
-	@stockmin float, -- Stock y Movimientos
-	@stockmax float,
-	@inven float,
-	@moneda nvarchar(50),
-	@cuentacontable nvarchar(50),
-	@desccuentacontable nvarchar(50),
-	@pvf nvarchar(50),
-	@cliente nvarchar(50),
-	@proveedor nvarchar(50),
-	@propcliente nvarchar(50),
-	@mod_mod varchar(15),
-	@usu_mod int,
+	@codigo		        NVARCHAR(50),
+	@nombre		        NVARCHAR(200),
+	@Categoria          VARCHAR(20),
+	@tipo		        NVARCHAR(50),
+	@caducidad          NVARCHAR(50),
+	@color		        NVARCHAR(50),
+	@umedida            NVARCHAR(50),
+	@tipomateria        NVARCHAR(50),
+	@active		        NVARCHAR(50),
+	@presentacion       NVARCHAR(50),
+	@cantidad           NVARCHAR(50),
+	@comentarios        NVARCHAR(50),
+	@cliente            NVARCHAR(50),
+	@proveedor	        NVARCHAR(50),
+	@propcliente        NVARCHAR(50),
+	@foto               NVARCHAR(200),
+	@stockmin	        FLOAT, -- Stock y Movimientos
+	@stockmax	        FLOAT,
+	@inven		        FLOAT,
+	@moneda			    NVARCHAR(50),
+	@cuentacontable     NVARCHAR(50),
+	@desccuentacontable NVARCHAR(50),
+	@pvf                NVARCHAR(50),
+	@fec_mod			DATETIME,
+	@mod_mod			VARCHAR(15),
+	@usu_mod			INT
 
-	@dpto nvarchar(50), -- modif
-	@quien nvarchar(50),
-	@clave nvarchar(50),
-	@fecha datetime,
-	@hora datetime,
-	@modificacion nvarchar(200),
-	@clienteproveedor nvarchar(50),
-	@modulo nvarchar(50)
 AS
 BEGIN
 
 	SET NOCOUNT ON;
-
-	DECLARE @fechaActualServidor DATETIME
-	SET  @fechaActualServidor = GETDATE()
-
 	UPDATE material
 
 		SET 
-			caducidad = @caducidad,
+			codigo = @codigo,
+			nombre = @nombre,
 			Categoria = @Categoria,
+			tipo = @tipo,
+			caducidad = @caducidad,
+			color = @color,
+			umedida = @umedida,
 			tipomateria = @tipomateria,
 			active = @active,
-			presentacion = @presentacion,
+			presentacion =  @presentacion,
 			cantidad = @cantidad,
 			comentarios = @comentarios,
+			cliente = @cliente,
+			proveedor = @proveedor,
+			propcliente = @propcliente,
 			foto = @foto,
-			stockmin =  @stockmin,
+			stockmin = @stockmin,
 			stockmax = @stockmax,
 			inven = @inven,
 			moneda = @moneda,
 			cuentacontable = @cuentacontable,
 			desccuentacontable = @desccuentacontable,
 			pvf = @pvf,
-			cliente = @cliente,
-			proveedor = @proveedor,
-			propcliente = @propcliente,
-			fec_mod = @fechaActualServidor,
+			fec_mod = @fec_mod,
 			mod_mod = @mod_mod,
 			usu_mod = @usu_mod
 
 			WHERE codigo = @codigo
 
-			EXEC sp_movimientos_alta @dpto, @quien, @clave, @fecha, @hora,
-						             @codigo, @modificacion, 'NA', 'NA', @clienteproveedor,
-						             'NA', 'NA', @modulo, 'NA', 'NA', null, null	
 END
 GO
 
@@ -733,60 +728,6 @@ GO
 
 -- =============================================
 -- Autor: Carlos Fabrizio Arriola Carmona
--- Fecha Creación: 24/Octubre/2014
--- Descripción: Asigna la ubicación al material. 
--- =============================================
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_mat_asignar_ubicacion_rmp01') AND type in (N'P', N'PC'))
-	DROP PROCEDURE dbo.sp_mat_asignar_ubicacion_rmp01
-GO
-
-CREATE PROCEDURE sp_mat_asignar_ubicacion_rmp01
-
-	@conse2    INT,
-	@ubicacion NVARCHAR(50)
-
-AS
-BEGIN
-	SET NOCOUNT ON;
-
-    UPDATE datosv
-		  SET ubicacion = @ubicacion
-		  WHERE conse2 = @conse2
-
-END
-GO
-
--- =============================================
--- Autor: Carlos Fabrizio Arriola Carmona
--- Fecha Creación: 28/Octubre/2014
--- Descripción: Asigna la disposición del material.
--- =============================================
-
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_mat_asignar_conformidad') AND type in (N'P', N'PC'))
-	DROP PROCEDURE dbo.sp_mat_asignar_conformidad
-GO
-
-CREATE PROCEDURE sp_mat_asignar_conformidad
-
-	@conse2    INT,
-	@stockv	   NVARCHAR(50),
-	@estado	   NVARCHAR(50)
-
-AS
-BEGIN
-	SET NOCOUNT ON;
-
-    UPDATE datosv
-	SET   stockv   = @stockv,
-		  estado   = @estado
-	WHERE conse2   = @conse2
-
-END
-GO
-
--- =============================================
--- Autor: Carlos Fabrizio Arriola Carmona
 -- Fecha Creación: 28/Octubre/2014
 -- Descripción: Registro recivo de materiales.
 -- =============================================
@@ -830,7 +771,7 @@ GO
 -- =============================================
 -- Autor: Carlos Fabrizio Arriola Carmona
 -- Fecha Creación: 01/Noviembre/2014
--- Description: Agrega un registro a la tabla silo.
+-- Descripción: Agrega un registro a la tabla silo.
 -- =============================================
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_mat_alta_silo') AND type in (N'P', N'PC'))
@@ -874,7 +815,7 @@ GO
 -- =============================================
 -- Autor: Carlos Fabrizio Arriola Carmona
 -- Fecha Creación: 01/Noviembre/2014
--- Description: Modifica un registro a la tabla silo.
+-- Descripción: Modifica un registro a la tabla silo.
 -- =============================================
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_mat_modificacion_silo') AND type in (N'P', N'PC'))
@@ -904,6 +845,246 @@ BEGIN
 		   datosv_lprove   = @datosv_lprove
 
 	WHERE codigosilo = @codigosilo
+
+END
+GO
+
+-- =============================================
+-- Autor: Carlos Fabrizio Arriola Carmona
+-- Fecha Creación: 07/Noviembre/2014
+-- Descripción: Alta de registro en la tabla tlaymat
+-- =============================================
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_mat_alta_laymat') AND type in (N'P', N'PC'))
+	DROP PROCEDURE dbo.sp_mat_alta_laymat
+GO
+
+CREATE PROCEDURE sp_mat_alta_laymat
+
+	@posicion	    NVARCHAR(50),
+	@contenido      NVARCHAR(50),
+	@cantidad       NVARCHAR(50),
+	@unidad         NVARCHAR(50),
+	@tipo           NVARCHAR(50),
+	@porv           NVARCHAR(50),
+	@porcm          NVARCHAR(50),
+	@lote		    NVARCHAR(50),
+	@fecha		    DATETIME,
+	@hora		    DATETIME,
+	@identificacion	NVARCHAR(50),
+	@responsable	NVARCHAR(50),
+	@comentarios    NVARCHAR(50),
+	@ban1			NVARCHAR(50),
+	@ban2			NVARCHAR(50)
+
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	INSERT INTO tlaymat
+
+	(posicion, contenido, cantidad, unidad, tipo,
+	 porv, porcm, lote, fecha, hora,
+	 identificacion, responsable, comentarios, ban1, ban2)
+
+	 VALUES
+	 (@posicion, @contenido, @cantidad, @unidad, @tipo,
+	  @porv, @porcm, @lote, @fecha, @hora,
+	  @identificacion, @responsable, @comentarios, @ban1, @ban2)
+
+END
+GO
+
+-- =============================================
+-- Autor: Carlos Fabrizio Arriola Carmona
+-- Fecha Creación: 01/Noviembre/2014
+-- Descripción: Actualiza la tabla tlaymat por la ubicación.
+-- =============================================
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_mat_modificacion_laymat') AND type in (N'P', N'PC'))
+	DROP PROCEDURE dbo.sp_mat_modificacion_laymat
+GO
+
+CREATE PROCEDURE sp_mat_modificacion_laymat
+
+	@posicion	    NVARCHAR(50),
+	@contenido      NVARCHAR(50),
+	@cantidad       NVARCHAR(50),
+	@unidad         NVARCHAR(50),
+	@tipo           NVARCHAR(50),
+	@porv           NVARCHAR(50),
+	@porcm          NVARCHAR(50),
+	@lote		    NVARCHAR(50),
+	@fecha		    DATETIME,
+	@hora		    DATETIME,
+	@identificacion	NVARCHAR(50),
+	@responsable	NVARCHAR(50),
+	@comentarios    NVARCHAR(50),
+	@ban1			NVARCHAR(50),
+	@ban2			NVARCHAR(50)
+
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	UPDATE tlaymat
+			SET 
+			    contenido      = @contenido,
+				cantidad       = @cantidad,
+				unidad         = @unidad,
+				tipo           = @tipo,
+				porv	       = @porv,
+				porcm          = @porcm,
+				lote	       = @lote,
+				fecha          = @fecha,
+				hora           = @hora,
+				identificacion = @identificacion,
+				responsable    = @responsable,
+				comentarios    = @comentarios,
+				ban1		   = @ban1,
+				ban2		   = @ban2
+
+			WHERE posicion = @posicion
+END
+GO
+
+-- =============================================
+-- Autor: Carlos Fabrizio Arriola Carmona
+-- Fecha Creación: 01/Noviembre/2014
+-- Descripción: Agrega un registro a la tabla notacarga.
+-- =============================================
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_mat_alta_notacarga') AND type in (N'P', N'PC'))
+	DROP PROCEDURE dbo.sp_mat_alta_notacarga
+GO
+
+CREATE PROCEDURE sp_mat_alta_notacarga
+
+	@notadecarga		NVARCHAR(50),
+	@tipom				NTEXT,
+	@ordenfabricacion	NVARCHAR(50),
+	@indiceof			NVARCHAR(50),
+	@fecha				NVARCHAR(50),
+	@hora				NVARCHAR(50),
+	@codigomateria		NVARCHAR(50),
+	@loteinterno		NVARCHAR(50),
+	@loteexterno		NVARCHAR(50),
+	@tecnico			NVARCHAR(50),
+	@ccsilo				NVARCHAR(50),
+	@ctsilo				NVARCHAR(50),
+	@idensilo			NVARCHAR(50),
+	@c_interno			NVARCHAR(50),
+	@des_prod			NVARCHAR(50),
+	@ban1				NVARCHAR(50),
+	@ban2				NVARCHAR(50),
+	@ban3				NVARCHAR(50)
+
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	INSERT INTO notacarga
+	 (notadecarga, tipom, ordenfabricacion, indiceof, fecha,
+	  hora, codigomateria, loteinterno, loteexterno, tecnico,
+	  ccsilo, ctsilo, idensilo, c_interno, des_prod,
+	  ban1, ban2, ban3)
+
+	 VALUES
+	 (@notadecarga, @tipom, @ordenfabricacion, @indiceof, @fecha,
+	  @hora, @codigomateria, @loteinterno, @loteexterno, @tecnico,
+	  @ccsilo, @ctsilo, @idensilo, @c_interno, @des_prod,
+	  @ban1, @ban2, @ban3)
+
+END
+GO
+
+-- =============================================
+-- Autor: Carlos Fabrizio Arriola Carmona
+-- Fecha Creación: 01/Noviembre/2014
+-- Descripción: Agrega un registro a la tabla registroretornomaterial
+-- =============================================
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_mat_alta_registroretornomaterial') AND type in (N'P', N'PC'))
+	DROP PROCEDURE dbo.sp_mat_alta_registroretornomaterial
+GO
+
+CREATE PROCEDURE sp_mat_alta_registroretornomaterial
+
+	@registro			NVARCHAR(50),
+	@fecha				NVARCHAR(50),
+	@hora				NVARCHAR(50),
+	@almacen			NVARCHAR(50),
+	@rack				NVARCHAR(50),
+	@ubicacion			NVARCHAR(50),
+	@material_codigo	NVARCHAR(50),
+	@material_nombre	NVARCHAR(50),
+	@datosv_lprove		NVARCHAR(50),
+	@tecnico			NVARCHAR(50),
+	@cantidad			NVARCHAR(50),
+	@ban1				NVARCHAR(50),
+	@ban2				NVARCHAR(50)
+
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	INSERT INTO registroretornomaterial
+
+	(registro, fecha, hora, almacen, rack,
+	 ubicacion, material_codigo, material_nombre, datosv_lprove, tecnico,
+	 cantidad, ban1, ban2)
+
+	 VALUES
+	 (@registro, @fecha, @hora, @almacen, @rack,
+	  @ubicacion, @material_codigo, @material_nombre, @datosv_lprove, @tecnico,
+	  @cantidad, @ban1, @ban2)
+
+END
+GO
+
+-- =============================================
+-- Autor: Carlos Fabrizio Arriola Carmona
+-- Fecha Creación: 01/Noviembre/2014
+-- Descripción: Vacia el silo.
+-- =============================================
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_mat_vaciarsilo') AND type in (N'P', N'PC'))
+	DROP PROCEDURE dbo.sp_mat_vaciarsilo
+GO
+
+CREATE PROCEDURE sp_mat_vaciarsilo
+
+	@conse					INT,
+	@estatus				NVARCHAR(50),
+	@material_codigo		NVARCHAR(50),
+	@cargainicial			INT,
+	@inven					INT,
+	@producto_c_interno		NVARCHAR(50),
+	@fechacarga				DATETIME,
+	@datosv_lprove			NVARCHAR(50),
+	@ordenfabricacion		NVARCHAR(50),
+	@material_tipo			NVARCHAR(50),
+	@descripcion			NTEXT
+
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	UPDATE silo
+			SET 
+
+			estatus		       = @estatus,
+			material_codigo    = @material_codigo,
+			cargainicial	   = @cargainicial,
+			inven			   = @inven,
+			producto_c_interno = @producto_c_interno,
+			fechacarga		   = @fechacarga,
+			datosv_lprove	   = @datosv_lprove,
+			ordenfabricacion   = @ordenfabricacion,
+			material_tipo	   = @material_tipo,
+			descripcion		   = @descripcion
+
+			WHERE conse = @conse
 
 END
 GO
