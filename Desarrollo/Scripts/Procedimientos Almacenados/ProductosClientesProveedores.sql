@@ -129,6 +129,7 @@ GO
 CREATE PROCEDURE sp_pcp_prod_modificar
 	
 	@c_interno			NVARCHAR (50),
+	@desc_prod			NVARCHAR(200),
 	@cliente_nombre		NVARCHAR(100),
 	@desc_com           NVARCHAR (50),
 	@pesoneto           NVARCHAR (50),
@@ -180,7 +181,8 @@ BEGIN
 
 	 UPDATE producto
 
-	 SET cliente_nombre = @cliente_nombre,				
+	 SET cliente_nombre = @cliente_nombre,		
+	 	 desc_prod = @desc_prod,
 		 desc_com = @desc_com,
 		 pesoneto = @pesoneto,
 		 peso = @peso,

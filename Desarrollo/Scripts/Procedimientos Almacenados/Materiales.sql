@@ -34,7 +34,7 @@ CREATE PROCEDURE sp_mat_materiales_alta
 	@cuentacontable nvarchar(50),
 	@desccuentacontable nvarchar(50),
 	@pvf nvarchar(50),
-	@mod_alta varchar(15),
+	@mod_alta varchar(40),
 	@usu_alta int,
 
 	@dpto nvarchar(50), -- modif
@@ -124,7 +124,7 @@ CREATE PROCEDURE sp_mat_materiales_modificacion
 	@desccuentacontable NVARCHAR(50),
 	@pvf                NVARCHAR(50),
 	@fec_mod			DATETIME,
-	@mod_mod			VARCHAR(15),
+	@mod_mod			VARCHAR(40),
 	@usu_mod			INT
 
 AS
@@ -1022,7 +1022,8 @@ CREATE PROCEDURE sp_mat_alta_registroretornomaterial
 	@tecnico			NVARCHAR(50),
 	@cantidad			NVARCHAR(50),
 	@ban1				NVARCHAR(50),
-	@ban2				NVARCHAR(50)
+	@ban2				NVARCHAR(50),
+	@OrdenFabricacion   VARCHAR(9)
 
 AS
 BEGIN
@@ -1032,12 +1033,12 @@ BEGIN
 
 	(registro, fecha, hora, almacen, rack,
 	 ubicacion, material_codigo, material_nombre, datosv_lprove, tecnico,
-	 cantidad, ban1, ban2)
+	 cantidad, ban1, ban2, OrdenFabricacion)
 
 	 VALUES
 	 (@registro, @fecha, @hora, @almacen, @rack,
 	  @ubicacion, @material_codigo, @material_nombre, @datosv_lprove, @tecnico,
-	  @cantidad, @ban1, @ban2)
+	  @cantidad, @ban1, @ban2, @OrdenFabricacion)
 
 END
 GO

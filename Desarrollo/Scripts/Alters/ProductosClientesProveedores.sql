@@ -146,4 +146,7 @@ GO
 
 ALTER TABLE proveedor
 ADD CONSTRAINT UK_Proveedor_nombre UNIQUE (nombre)
+GO
+
+
 
