@@ -125,3 +125,7 @@ GO
 ALTER TABLE material
 ADD Categoria VARCHAR(20)
 GO
+
+ALTER TABLE RegistroRetornoMaterial
+ADD OrdenFabricacion VARCHAR(9)
+

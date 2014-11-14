@@ -85,11 +85,11 @@ GO
 -- Descripción: Asigna la ubicación al material. 
 -- =============================================
 
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_mat_asignar_ubicacion_rmp01') AND type in (N'P', N'PC'))
-	DROP PROCEDURE dbo.sp_mat_asignar_ubicacion_rmp01
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_datosv_asignar_ubicacion_rmp01') AND type in (N'P', N'PC'))
+	DROP PROCEDURE dbo.sp_datosv_asignar_ubicacion_rmp01
 GO
 
-CREATE PROCEDURE sp_mat_asignar_ubicacion_rmp01
+CREATE PROCEDURE sp_datosv_asignar_ubicacion_rmp01
 
 	@conse2    INT,
 	@ubicacion NVARCHAR(50)
@@ -111,23 +111,25 @@ GO
 -- Descripción: Asigna la disposición del material.
 -- =============================================
 
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_mat_asignar_conformidad') AND type in (N'P', N'PC'))
-	DROP PROCEDURE dbo.sp_mat_asignar_conformidad
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_datosv_asignar_conformidad') AND type in (N'P', N'PC'))
+	DROP PROCEDURE dbo.sp_datosv_asignar_conformidad
 GO
 
-CREATE PROCEDURE sp_mat_asignar_conformidad
+CREATE PROCEDURE sp_datosv_asignar_conformidad
 
-	@conse2    INT,
-	@stockv	   NVARCHAR(50),
-	@estado	   NVARCHAR(50)
+	@conse2		    INT,
+	@stockv	        NVARCHAR(50),
+	@estado	        NVARCHAR(50),
+	@comentarios    NTEXT
 
 AS
 BEGIN
 	SET NOCOUNT ON;
 
     UPDATE datosv
-	SET   stockv   = @stockv,
-		  estado   = @estado
+	SET   stockv      = @stockv,
+		  estado      = @estado,
+		  comentarios = @comentarios
 	WHERE conse2   = @conse2
 
 END
