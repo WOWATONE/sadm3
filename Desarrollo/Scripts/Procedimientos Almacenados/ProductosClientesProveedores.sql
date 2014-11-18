@@ -40,6 +40,7 @@ CREATE PROCEDURE sp_pcp_prod_alta
 	@cavidad nvarchar(50),
 	@minmen nvarchar(50),
 	@opmaq nvarchar(50),
+	@no_item varchar(20),
 	@molde nvarchar(50),
 	@stockmin nvarchar(50),
 	@stockmax nvarchar(50),
@@ -84,7 +85,7 @@ BEGIN
 			 nivelrevision, maquina, TipoProceso, TipoProducto, precioinven,
 			 precio, factor, foto,
 			 num_orden, aql, caducidad, plandecontrol, cavidad,
-			 minmen, opmaq, molde, stockmin, stockmax, 
+			 minmen, opmaq, no_item, molde, stockmin, stockmax, 
 			 e_lote, codigodibujo, niving, ban4, fa,
 			 e_bolsa, e_loteb, e_caja, e_lotec, comen,
 			 fec_alta, mod_alta, usu_alta)
@@ -96,7 +97,7 @@ BEGIN
 			 @nivelrevision, @maquina, @TipoProceso, @TipoProducto, @precioinven,
 			 @precio, @factor, @foto,
 			 @num_orden, @aql, @caducidad, @plandecontrol, @cavidad,
-			 @minmen, @opmaq, @molde, @stockmin, @stockmax, 
+			 @minmen, @opmaq, @no_item, @molde, @stockmin, @stockmax, 
 			 @e_lote, @codigodibujo, @niving, @ban4, @fa,
 			 @e_bolsa, @e_loteb, @e_caja, @e_lotec, @comen,
 			 GETDATE(), @mod_alta, @usu_alta)
@@ -158,6 +159,7 @@ CREATE PROCEDURE sp_pcp_prod_modificar
 	@cavidad			NVARCHAR(50),
 	@minmen				NVARCHAR(50),
 	@opmaq				NVARCHAR(50),
+	@no_item			VARCHAR(20),
 	@molde				NVARCHAR(50),
 	@stockmin			NVARCHAR(50),
 	@stockmax			NVARCHAR(50),
@@ -210,6 +212,7 @@ BEGIN
 		 cavidad = @cavidad,
 		 minmen = @minmen,
 		 opmaq = @opmaq,
+		 no_item = @no_item,
 		 molde= @molde,
 		 stockmin = @stockmin,
 		 stockmax = @stockmax,
@@ -270,15 +273,16 @@ CREATE PROCEDURE sp_pcp_inventario_componente_alta
 
 		@c_interno nvarchar(50),
 		@codigo nvarchar(50),
+		@ban1 nvarchar(50),
 		@cantidad int
 AS
 BEGIN
 
 	SET NOCOUNT ON;
 
-	 INSERT INTO componente(c_interno, codigo, cantidad)
+	 INSERT INTO componente(c_interno, codigo, ban1, cantidad)
 
-	 VALUES(@c_interno, @codigo, @cantidad)
+	 VALUES(@c_interno, @codigo, @ban1, @cantidad)
 END
 
 -- =============================================
