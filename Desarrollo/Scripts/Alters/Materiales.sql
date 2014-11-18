@@ -128,4 +128,5 @@ GO
 
 ALTER TABLE RegistroRetornoMaterial
 ADD OrdenFabricacion VARCHAR(9)
+GO
 
