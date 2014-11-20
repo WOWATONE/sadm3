@@ -148,10 +148,11 @@ GO
 
 CREATE PROCEDURE sp_datosv_asignar_regreso_MPS02
 
-	@conse2		INT,
-	@inven      FLOAT,
-	@stockv		NVARCHAR(50),
-	@ubicacion	NVARCHAR(50)
+	@conse2				INT,
+	@inven				FLOAT,
+	@stockv				NVARCHAR(50),
+	@ubicacion			NVARCHAR(50),
+	@ordenfabricacion   NVARCHAR(50)
 
 AS
 BEGIN
@@ -159,9 +160,10 @@ BEGIN
 	SET NOCOUNT ON;
 
 	UPDATE  datosv
-			SET   inven     = @inven,
-				  stockv    = @stockv,
-			      ubicacion = @ubicacion
-			WHERE conse2    = @conse2
+			SET   inven            = @inven,
+				  stockv           = @stockv,
+			      ubicacion		   = @ubicacion,
+				  ordenfabricacion = @ordenfabricacion
+			WHERE conse2           = @conse2
 END
 GO
