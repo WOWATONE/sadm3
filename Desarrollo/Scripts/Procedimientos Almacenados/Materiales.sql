@@ -1055,7 +1055,7 @@ GO
 
 CREATE PROCEDURE sp_mat_vaciarsilo
 
-	@conse					INT,
+	@codigosilo				NVARCHAR(50),
 	@estatus				NVARCHAR(50),
 	@material_codigo		NVARCHAR(50),
 	@cargainicial			INT,
@@ -1085,7 +1085,7 @@ BEGIN
 			material_tipo	   = @material_tipo,
 			descripcion		   = @descripcion
 
-			WHERE conse = @conse
+			WHERE codigosilo = @codigosilo
 
 END
 GO
