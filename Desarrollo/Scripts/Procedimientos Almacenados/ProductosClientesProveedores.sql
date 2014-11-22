@@ -56,6 +56,8 @@ CREATE PROCEDURE sp_pcp_prod_alta
 	@comen ntext,
 	@mod_alta varchar(40),
 	@usu_alta int,
+	@TiempoMontaje	INT,
+	@TiempoDesmontaje INT,
 	@dpto nvarchar(50), -- modif
 	@quien nvarchar(50),
 	@clave nvarchar(50),
@@ -88,7 +90,7 @@ BEGIN
 			 minmen, opmaq, no_item, molde, stockmin, stockmax, 
 			 e_lote, codigodibujo, niving, ban4, fa,
 			 e_bolsa, e_loteb, e_caja, e_lotec, comen,
-			 fec_alta, mod_alta, usu_alta)
+			 fec_alta, mod_alta, usu_alta, TiempoMontaje, TiempoDesmontaje)
 			 
 			 VALUES
 			(@desc_prod, @c_interno, @cliente_nombre, @desc_com, @pesoneto,
@@ -100,7 +102,7 @@ BEGIN
 			 @minmen, @opmaq, @no_item, @molde, @stockmin, @stockmax, 
 			 @e_lote, @codigodibujo, @niving, @ban4, @fa,
 			 @e_bolsa, @e_loteb, @e_caja, @e_lotec, @comen,
-			 GETDATE(), @mod_alta, @usu_alta)
+			 GETDATE(), @mod_alta, @usu_alta, @TiempoMontaje, @TiempoDesmontaje)
 
      INSERT INTO tinven
 		    (c_interno, c_num, inven, stockmin, stockmax)
@@ -175,7 +177,10 @@ CREATE PROCEDURE sp_pcp_prod_modificar
 	@comen				NTEXT,
 	@mod_mod			VARCHAR(40),
 	@fec_mod			DATETIME,
-	@usu_mod			INT
+	@usu_mod			INT,
+	@TiempoMontaje		INT,
+	@TiempoDesmontaje	INT
+
 AS
 BEGIN
 
@@ -228,7 +233,9 @@ BEGIN
 		 comen = @comen,
 		 mod_mod = @mod_mod,
 		 fec_mod = GETDATE(),
-		 usu_mod = @usu_mod
+		 usu_mod = @usu_mod,
+		 TiempoMontaje	= @TiempoMontaje,
+	     TiempoDesmontaje = @TiempoDesmontaje
 
 		 WHERE c_interno = @c_interno
 END
@@ -640,6 +647,8 @@ CREATE PROCEDURE sp_pcp_prov_alta
 	@funcion nvarchar(50),
 	@mod_alta varchar(40),
 	@usu_alta int,
+	@CondicionesPago VARCHAR(10),
+	@Moneda		     NVARCHAR(50),
 
 	@dpto nvarchar(50), -- modif
 	@quien nvarchar(50),
@@ -668,14 +677,14 @@ BEGIN
 	 (nombre, razonsocial, cuentacontable, desccuentacontable, ciudad,
 	  pais, incoterms, rfc, direccion, comentarios,
 	  contacto, email, telefono, fax, funcion,
-	  fec_alta, mod_alta, usu_alta)
+	  fec_alta, mod_alta, usu_alta, CondicionesPago, Moneda)
 
 	  VALUES
 
 	  (@nombre, @razonsocial, @cuentacontable, @desccuentacontable, @ciudad,
 	   @pais, @incoterms, @rfc, @direccion, @comentarios,
 	   @contacto, @email, @telefono, @fax, @funcion,
-	   GETDATE(), @mod_alta, @usu_alta)
+	   GETDATE(), @mod_alta, @usu_alta, @CondicionesPago, @Moneda)
 
 	   EXEC sp_movimientos_alta @dpto, @quien, @clave, @fecha, @hora,
 								@codigo, @modificacion, @ordenfabricacion, @ordencliente, @clienteproveedor,
@@ -684,6 +693,7 @@ BEGIN
 
 
 END
+GO
 
 -- =============================================
 -- Autor: Carlos Fabrizio Arriola Carmona
@@ -714,6 +724,8 @@ CREATE PROCEDURE sp_pcp_prov_modificar
 	@funcion nvarchar(50),
 	@mod_mod varchar(40),
 	@usu_mod int,
+	@CondicionesPago VARCHAR(10),
+	@Moneda		     NVARCHAR(50),
 
 	@dpto nvarchar(50), -- modif
 	@quien nvarchar(50),
@@ -754,7 +766,9 @@ BEGIN
 		 funcion = @funcion,
 		 fec_mod = GETDATE(),
 		 mod_mod = @mod_mod,
-		 usu_mod = @usu_mod
+		 usu_mod = @usu_mod,
+		 CondicionesPago = @CondicionesPago,
+		 Moneda = @Moneda
 
 		 WHERE nombre = @nombre
 

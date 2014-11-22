@@ -203,33 +203,32 @@ GO
 
 CREATE PROCEDURE sp_mat_proveedormaterial_alta
 
-	@nombre nvarchar(100),
-	@codigo nvarchar(50),
-	@precio real,
-	@umedida nvarchar(50),
-	@tipo nvarchar(50),
-	@propcliente nvarchar(50),
-	@cliente nvarchar(50),
-	@mod_alta varchar(15),
-	@usu_alta int
+	@nombre			NVARCHAR(100),
+	@codigo			NVARCHAR(50),
+	@precio			REAL,
+	@umedida		NVARCHAR(50),
+	@tipo			NVARCHAR(50),
+	@propcliente	NVARCHAR(50),
+	@cliente		NVARCHAR(50),
+	@mod_alta		VARCHAR(15),
+	@usu_alta		INT,
+	@fec_alta		DATETIME
+
 	
 AS
 BEGIN
 
 	SET NOCOUNT ON;
 
-	DECLARE @fechaActualServidor DATETIME
-	SET  @fechaActualServidor = GETDATE()
-
 	INSERT INTO proveedormaterial
 	(nombre, codigo, precio, umedida, tipo,
-	 propcliente, cliente, fechaalta, fec_alta, mod_alta, 
-	 usu_alta)
+	 propcliente, cliente, fechaalta, mod_alta, usu_alta,
+	 fec_alta)
 
 	VALUES
 	(@nombre, @codigo, @precio, @umedida, @tipo, 
-	 @propcliente, @cliente , @fechaActualServidor, @fechaActualServidor, @mod_alta,
-	 @usu_alta)
+	 @propcliente, @cliente , @fec_alta, @mod_alta, @usu_alta,
+	 @fec_alta)
 
 END
 GO
@@ -1023,7 +1022,9 @@ CREATE PROCEDURE sp_mat_alta_registroretornomaterial
 	@cantidad			NVARCHAR(50),
 	@ban1				NVARCHAR(50),
 	@ban2				NVARCHAR(50),
-	@OrdenFabricacion   VARCHAR(9)
+	@OrdenFabricacion   VARCHAR(9),
+	@CantidadOriginal   VARCHAR(50),
+	@Comentarios		VARCHAR(200)
 
 AS
 BEGIN
@@ -1033,12 +1034,14 @@ BEGIN
 
 	(registro, fecha, hora, almacen, rack,
 	 ubicacion, material_codigo, material_nombre, datosv_lprove, tecnico,
-	 cantidad, ban1, ban2, OrdenFabricacion)
+	 cantidad, ban1, ban2, OrdenFabricacion, CantidadOriginal,
+	 Comentarios)
 
 	 VALUES
 	 (@registro, @fecha, @hora, @almacen, @rack,
 	  @ubicacion, @material_codigo, @material_nombre, @datosv_lprove, @tecnico,
-	  @cantidad, @ban1, @ban2, @OrdenFabricacion)
+	  @cantidad, @ban1, @ban2, @OrdenFabricacion, @CantidadOriginal,
+	  @Comentarios)
 
 END
 GO
@@ -1089,3 +1092,39 @@ BEGIN
 
 END
 GO
+
+-- =============================================
+-- Autor: Carlos Fabrizio Arriola Carmona
+-- Fecha Creación: 01/Noviembre/2014
+-- Descripción: Consulta el inventario de materiales por almacen.
+-- =============================================
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_mat_ConsultaMaterialPorAlmacen') AND type in (N'P', N'PC'))
+	DROP PROCEDURE [dbo].sp_mat_ConsultaMaterialPorAlmacen
+GO
+
+CREATE PROCEDURE sp_mat_ConsultaMaterialPorAlmacen
+
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	SELECT codigo, material, TablaPivote.Categoria, TablaPivote.tipo, TablaPivote.pvf,
+	TablaPivote.stockmin, TablaPivote.stockmax, 
+	[RMP01], [MPC02], [MPNC01], [MPS03]
+FROM
+(
+	SELECT DAT.codigo, DAT.material, MAT.Categoria, MAT.tipo, MAT.pvf,
+	MAT.stockmin, MAT.stockmax, DAT.inven, DAT.stockv
+	FROM datosv AS DAT
+	LEFT JOIN material AS MAT
+	ON DAT.codigo = MAT.codigo) AS SourceTable
+PIVOT
+(
+	SUM(inven)
+	FOR stockv IN ([RMP01], [MPC02], [MPNC01], [MPS03])
+) AS TablaPivote;
+
+END
+GO
+

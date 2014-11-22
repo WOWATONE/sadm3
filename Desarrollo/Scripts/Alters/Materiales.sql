@@ -130,3 +130,11 @@ ALTER TABLE RegistroRetornoMaterial
 ADD OrdenFabricacion VARCHAR(9)
 GO
 
+ALTER TABLE RegistroRetornoMaterial
+ADD CantidadOriginal VARCHAR(50)
+GO
+
+ALTER TABLE RegistroRetornoMaterial
+ADD Comentarios VARCHAR(200)
+GO
+
