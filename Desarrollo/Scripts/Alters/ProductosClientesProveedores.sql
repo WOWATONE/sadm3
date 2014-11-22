@@ -148,5 +148,35 @@ ALTER TABLE proveedor
 ADD CONSTRAINT UK_Proveedor_nombre UNIQUE (nombre)
 GO
 
+ALTER TABLE proveedor
+ADD CondicionesPago VARCHAR(10)
+GO
 
+ALTER TABLE proveedor
+ADD Moneda NVARCHAR(50)
+GO
+
+ALTER TABLE producto
+ADD TiempoMontaje INT
+GO
+
+ALTER TABLE producto
+ADD TiempoDesmontaje INT
+GO
+
+ALTER TABLE producto
+ADD TiempoMontaje INT
+GO
+
+
+SELECT *
+FROM [dbo].[rechazosop]
+
+SELECT *
+FROM datosr
+
+
+ALTER TABLE rechazosop
+ADD CONSTRAINT FK_c_interno FOREIGN KEY (c_interno) REFERENCES producto(c_interno)
+GO
 
