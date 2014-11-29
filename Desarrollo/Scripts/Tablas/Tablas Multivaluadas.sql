@@ -39,8 +39,7 @@ GO
 
 CREATE TABLE PermisosUsuarios
 (
-	PermisoUsuarioId INT IDENTITY(1, 1) PRIMARY KEY,
-	IdUsuario INT NOT NULL,
+	UsuarioId INT NOT NULL,
 	PermisoId INT NOT NULL,
 	FechaModificacion DateTime NOT NULL
 )
