@@ -169,17 +169,8 @@ ADD TiempoMontaje INT
 GO
 
 
-SELECT *
-FROM [dbo].[rechazosop]
-
-SELECT *
-FROM datosr
-
-
 ALTER TABLE rechazosop
 ADD CONSTRAINT FK_c_interno FOREIGN KEY (c_interno) REFERENCES producto(c_interno)
 GO
 
-ALTER TABLE producto
-drop constraint UK_Producto_desc_prod
 

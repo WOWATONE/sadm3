@@ -11,7 +11,7 @@ GO
 CREATE PROCEDURE sp_mat_materiales_alta
 
 	@codigo nvarchar(50),
-	@Categoria varchar(20),
+	@Categoria varchar(30),
 	@nombre nvarchar(200),
 	@tipo   nvarchar(50),
 	@caducidad nvarchar(50),
@@ -102,7 +102,7 @@ CREATE PROCEDURE sp_mat_materiales_modificacion
 
 	@codigo		        NVARCHAR(50),
 	@nombre		        NVARCHAR(200),
-	@Categoria          VARCHAR(20),
+	@Categoria          VARCHAR(30),
 	@tipo		        NVARCHAR(50),
 	@caducidad          NVARCHAR(50),
 	@color		        NVARCHAR(50),
@@ -1109,7 +1109,8 @@ AS
 BEGIN
 	SET NOCOUNT ON;
 
-	SELECT codigo, material, TablaPivote.Categoria, TablaPivote.tipo, TablaPivote.pvf,
+	SELECT ROW_NUMBER() OVER (ORDER BY codigo)  AS num, 
+	codigo, material, TablaPivote.Categoria, TablaPivote.tipo, TablaPivote.pvf,
 	TablaPivote.stockmin, TablaPivote.stockmax, 
 	[RMP01], [MPC02], [MPNC01], [MPS03]
 FROM

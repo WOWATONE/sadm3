@@ -47,7 +47,6 @@ CREATE PROCEDURE sp_pcp_prod_alta
 	@e_lote int,
 	@codigodibujo nvarchar(100),
 	@niving nvarchar(50),
-	@ban4 nvarchar(50),
 	@fa nvarchar(50),
 	@e_bolsa int,
 	@e_loteb int,
@@ -88,7 +87,7 @@ BEGIN
 			 precio, factor, foto,
 			 num_orden, aql, caducidad, plandecontrol, cavidad,
 			 minmen, opmaq, no_item, molde, stockmin, stockmax, 
-			 e_lote, codigodibujo, niving, ban4, fa,
+			 e_lote, codigodibujo, niving, fa,
 			 e_bolsa, e_loteb, e_caja, e_lotec, comen,
 			 fec_alta, mod_alta, usu_alta, TiempoMontaje, TiempoDesmontaje)
 			 
@@ -100,15 +99,15 @@ BEGIN
 			 @precio, @factor, @foto,
 			 @num_orden, @aql, @caducidad, @plandecontrol, @cavidad,
 			 @minmen, @opmaq, @no_item, @molde, @stockmin, @stockmax, 
-			 @e_lote, @codigodibujo, @niving, @ban4, @fa,
+			 @e_lote, @codigodibujo, @niving, @fa,
 			 @e_bolsa, @e_loteb, @e_caja, @e_lotec, @comen,
 			 GETDATE(), @mod_alta, @usu_alta, @TiempoMontaje, @TiempoDesmontaje)
 
-     INSERT INTO tinven
-		    (c_interno, c_num, inven, stockmin, stockmax)
+   --  INSERT INTO tinven
+		 --   (c_interno, c_num, inven, stockmin, stockmax)
 
-			VALUES
-			(@c_cliente + ' Rev:' + @nivelrevision, 'c_num', 0, @stockmin, @stockmax)
+			--VALUES
+			--(@c_cliente + ' Rev:' + @nivelrevision, 'c_num', 0, @stockmin, @stockmax)
 
 	
 	EXEC sp_movimientos_alta @dpto, @quien, @clave, @fecha, @hora,
@@ -116,7 +115,6 @@ BEGIN
 						    @ubicacion, @lote, @modulo, @cantidad, @almacen, null, null
 
 END
-
 GO
 
 -- =============================================
@@ -168,7 +166,6 @@ CREATE PROCEDURE sp_pcp_prod_modificar
 	@e_lote				INT,
 	@codigodibujo		NVARCHAR(100),
 	@niving				NVARCHAR(50),
-	@ban4				NVARCHAR(50),
 	@fa					NVARCHAR(50),
 	@e_bolsa			INT,
 	@e_loteb			INT,
@@ -224,7 +221,6 @@ BEGIN
 		 e_lote = @e_lote,
 		 codigodibujo  = @codigodibujo,
 		 niving = @niving,
-		 ban4 = @ban4,
 		 fa = @fa,
 		 e_bolsa = @e_bolsa,
 		 e_loteb = @e_loteb,
@@ -239,7 +235,6 @@ BEGIN
 
 		 WHERE c_interno = @c_interno
 END
-
 GO
 
 -- =============================================
@@ -291,6 +286,7 @@ BEGIN
 
 	 VALUES(@c_interno, @codigo, @ban1, @cantidad)
 END
+GO
 
 -- =============================================
 -- Autor: Carlos Fabrizio Arriola Carmona
@@ -313,6 +309,7 @@ BEGIN
 	 WHERE c_interno = @c_interno
 
 END
+GO
 
 -- =============================================
 -- Autor: Carlos Fabrizio Arriola Carmona
@@ -338,6 +335,7 @@ BEGIN
 
 	 VALUES(@c_interno, @empaque, @cantidad, @ban1)
 END
+GO
 
 -- =============================================
 -- Autor: Carlos Fabrizio Arriola Carmona
@@ -360,6 +358,7 @@ BEGIN
 	 WHERE c_interno = @c_interno
 
 END
+GO
 
 -- =============================================
 -- Autor: Carlos Fabrizio Arriola Carmona
