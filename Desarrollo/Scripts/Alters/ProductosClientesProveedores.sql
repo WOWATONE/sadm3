@@ -168,9 +168,14 @@ ALTER TABLE producto
 ADD TiempoMontaje INT
 GO
 
-
 ALTER TABLE rechazosop
 ADD CONSTRAINT FK_c_interno FOREIGN KEY (c_interno) REFERENCES producto(c_interno)
 GO
 
+ALTER TABLE producto
+ADD TiempoMontaje DECIMAL(5, 2)
+GO
 
+ALTER TABLE producto
+ADD TiempoDesmontaje DECIMAL(5, 2)
+GO
