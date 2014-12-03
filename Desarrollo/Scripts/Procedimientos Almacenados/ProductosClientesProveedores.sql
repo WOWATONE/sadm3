@@ -55,8 +55,8 @@ CREATE PROCEDURE sp_pcp_prod_alta
 	@comen ntext,
 	@mod_alta varchar(40),
 	@usu_alta int,
-	@TiempoMontaje	INT,
-	@TiempoDesmontaje INT,
+	@TiempoMontaje	DECIMAL,
+	@TiempoDesmontaje DECIMAL,
 	@dpto nvarchar(50), -- modif
 	@quien nvarchar(50),
 	@clave nvarchar(50),
@@ -175,8 +175,8 @@ CREATE PROCEDURE sp_pcp_prod_modificar
 	@mod_mod			VARCHAR(40),
 	@fec_mod			DATETIME,
 	@usu_mod			INT,
-	@TiempoMontaje		INT,
-	@TiempoDesmontaje	INT
+	@TiempoMontaje		DECIMAL,
+	@TiempoDesmontaje	DECIMAL
 
 AS
 BEGIN
