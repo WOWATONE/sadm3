@@ -351,7 +351,9 @@ CREATE PROCEDURE sp_mat_ordencompra_alta
 	@iva nvarchar(50),
 	@totalorden nvarchar(50),
 	@Elaboro int,
-	@FechaEntrada datetime
+	@FechaEntrada datetime,
+	@Factura		 NVARCHAR(50),
+	@NumeroPedimento NVARCHAR(50)
 
 AS
 BEGIN
@@ -363,14 +365,14 @@ BEGIN
 	 condpago, confpedido, tipocompra, fechaped, fechaent,
 	 moneda, comen, autdcompras, autdfinanzas, autdproduccion,
 	 resprecibe, subtotal, iva, totalorden, Elaboro,
-	 FechaEntrada)
+	 FechaEntrada, Factura, NumeroPedimento)
 
 	VALUES
 	(@norden, @estatus, @tipoorden, @proveedor, @dpto,
 	 @condpago, @confpedido, @tipocompra, @fechaped, @fechaent,
 	 @moneda, @comen, @autdcompras, @autdfinanzas, @autdproduccion,
 	 @resprecibe, @subtotal, @iva, @totalorden, @Elaboro,
-	 @FechaEntrada)
+	 @FechaEntrada, @Factura, @NumeroPedimento)
 END
 GO
 
@@ -659,8 +661,10 @@ GO
 
 CREATE PROCEDURE sp_mat_ordencompra_estatus_porpagar		
 
-	@norden nvarchar(50),
-	@FechaEntrada datetime
+	@norden			 NVARCHAR(50),
+	@FechaEntrada	 DATETIME,
+	@Factura		 NVARCHAR(50),
+	@NumeroPedimento NVARCHAR(50)
 
 AS
 BEGIN
@@ -668,8 +672,10 @@ BEGIN
 	SET NOCOUNT ON;
 
     UPDATE ocompra
-		  SET estatus = 'X PAGAR',
-		  FechaEntrada  = @FechaEntrada
+		  SET estatus     = 'X PAGAR',
+		  FechaEntrada    = @FechaEntrada,
+		  Factura		  = @Factura,
+		  NumeroPedimento = @NumeroPedimento
 		  WHERE norden = @norden
 
 END

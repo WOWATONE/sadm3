@@ -173,9 +173,13 @@ ADD CONSTRAINT FK_c_interno FOREIGN KEY (c_interno) REFERENCES producto(c_intern
 GO
 
 ALTER TABLE producto
-ADD TiempoMontaje DECIMAL(5, 2)
+ADD TiempoMontaje DECIMAL(7, 2)
 GO
 
 ALTER TABLE producto
-ADD TiempoDesmontaje DECIMAL(5, 2)
+ADD TiempoDesmontaje DECIMAL(7, 2)
+GO
+
+ALTER TABLE Cliente
+ADD Tipo VARCHAR(20)
 GO

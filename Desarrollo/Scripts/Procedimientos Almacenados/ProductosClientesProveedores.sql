@@ -55,8 +55,8 @@ CREATE PROCEDURE sp_pcp_prod_alta
 	@comen ntext,
 	@mod_alta varchar(40),
 	@usu_alta int,
-	@TiempoMontaje	DECIMAL,
-	@TiempoDesmontaje DECIMAL,
+	@TiempoMontaje	DECIMAL(7, 2),
+	@TiempoDesmontaje DECIMAL(7, 2),
 	@dpto nvarchar(50), -- modif
 	@quien nvarchar(50),
 	@clave nvarchar(50),
@@ -175,8 +175,8 @@ CREATE PROCEDURE sp_pcp_prod_modificar
 	@mod_mod			VARCHAR(40),
 	@fec_mod			DATETIME,
 	@usu_mod			INT,
-	@TiempoMontaje		DECIMAL,
-	@TiempoDesmontaje	DECIMAL
+	@TiempoMontaje		DECIMAL(7, 2),
+	@TiempoDesmontaje	DECIMAL(7, 2)
 
 AS
 BEGIN
@@ -435,7 +435,13 @@ CREATE PROCEDURE sp_pcp_cliente_alta
 	@lote nvarchar(50),
 	@modulo nvarchar(50),
 	@cantidad nvarchar(50),
-	@almacen nvarchar(50)
+	@almacen nvarchar(50),
+	@Tipo		VARCHAR(20),
+	@col_fact	NVARCHAR(50),
+	@tax_id		NVARCHAR(50),
+	@codigopais NVARCHAR(50),
+	@monedapais NVARCHAR(50),
+	@cod_postal NVARCHAR(50)
 
 AS
 BEGIN
@@ -453,7 +459,9 @@ BEGIN
 	  telefono1, fax1, funcion1, contacto2, mail2,
 	  telefono2, fax2, funcion2, moneda, modopago,
 	  cuenta1, cep1, credito, metodopago, iva,
-	  descuento, cep2, fec_alta, mod_alta, usu_alta)
+	  descuento, cep2, fec_alta, mod_alta, usu_alta,
+	  Tipo, col_fact, tax_id, codigopais, monedapais,
+	  cod_postal)
 
 	  VALUES
 	  (@nombre, @nombre_comp, @VF, @c_proveedor, @cuentacontable,
@@ -465,13 +473,16 @@ BEGIN
 	   @telefono1, @fax1, @funcion1, @contacto2, @mail2,
 	   @telefono2, @fax2, @funcion2, @moneda, @modopago,
 	   @cuenta1, @cep1, @credito, @metodopago, @iva,
-	   @descuento, @cep2, GETDATE(), @mod_alta, @usu_alta)
+	   @descuento, @cep2, GETDATE(), @mod_alta, @usu_alta,
+	   @Tipo, @col_fact, @tax_id, @codigopais, @monedapais,
+	   @cod_postal)
 
 	   EXEC sp_movimientos_alta @dpto, @quien, @clave, @fecha, @hora,
 						    @codigo, @modificacion, @ordenfabricacion, @ordencliente, @clienteproveedor,
 						    @ubicacion, @lote, @modulo, @cantidad, @almacen, null, null
 
 END
+GO
 
 -- =============================================
 -- Autor: Carlos Fabrizio Arriola Carmona
@@ -549,7 +560,13 @@ CREATE PROCEDURE sp_pcp_cliente_modificacion
 	@lote nvarchar(50),
 	@modulo nvarchar(50),
 	@cantidad nvarchar(50),
-	@almacen nvarchar(50)
+	@almacen nvarchar(50),
+	@Tipo		VARCHAR(20),
+	@col_fact	NVARCHAR(50),
+	@tax_id		NVARCHAR(50),
+	@codigopais NVARCHAR(50),
+	@monedapais NVARCHAR(50),
+	@cod_postal NVARCHAR(50)
 
 AS
 BEGIN
@@ -606,16 +623,22 @@ BEGIN
 			descuento = @descuento,
 			cep2 = @cep2,
 			fec_mod = GETDATE(),
-			mod_mod = @mod_mod,
-			usu_mod = @usu_mod 
-
+			mod_mod  = @mod_mod,
+			usu_mod  = @usu_mod,
+			Tipo     = @Tipo,
+			col_fact = @col_fact,
+			tax_id	 = @tax_id,
+			codigopais = @codigopais,
+			monedapais = @monedapais,
+			cod_postal = @cod_postal	
+			 
 			WHERE nombre = @nombre
 
    EXEC sp_movimientos_alta @dpto, @quien, @clave, @fecha, @hora,
 						    @codigo, @modificacion, @ordenfabricacion, @ordencliente, @clienteproveedor,
 						    @ubicacion, @lote, @modulo, @cantidad, @almacen, null, null
-
 END
+GO
 
 -- =============================================
 -- Autor: Carlos Fabrizio Arriola Carmona
@@ -776,3 +799,4 @@ BEGIN
 								@ubicacion, @lote, @modulo, @cantidad, @almacen,
 								null, null
 END
+GO

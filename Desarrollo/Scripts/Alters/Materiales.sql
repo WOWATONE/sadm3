@@ -138,3 +138,10 @@ ALTER TABLE RegistroRetornoMaterial
 ADD Comentarios VARCHAR(200)
 GO
 
+ALTER TABLE ocompra
+ADD Factura NVARCHAR(50)
+GO
+
+ALTER TABLE ocompra
+ADD NumeroPedimento NVARCHAR(50)
+GO
