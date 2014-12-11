@@ -800,3 +800,78 @@ BEGIN
 								null, null
 END
 GO
+
+-- =============================================
+-- Autor: Carlos Fabrizio Arriola Carmona
+-- Fecha Creación: 28/Julio/2014
+-- Description: Alta de producto para el módulo a de productos, clientes, proveedores.
+-- =============================================
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_pcp_prod_certificado_alta') AND type in (N'P', N'PC'))
+	DROP PROCEDURE dbo.sp_pcp_prod_certificado_alta
+GO
+
+CREATE PROCEDURE sp_pcp_prod_certificado_alta
+	
+	@id_prod_cc			INT,
+	@c_interno			NVARCHAR(50),
+	@no_cota			NVARCHAR(10),
+	@caracteristicas	NVARCHAR(250),
+	@resultados			NVARCHAR(250),
+	@frecuencia_ins		NVARCHAR(250),
+	@metodo_ins			NVARCHAR(250),
+	@estudio_proc		NVARCHAR(250)
+
+AS
+BEGIN
+
+	SET NOCOUNT ON;
+
+	INSERT INTO producto_cc
+	(id_prod_cc, c_interno, no_cota, caracteristicas, resultados, 
+	 frecuencia_ins, metodo_ins, estudio_proc)
+
+	VALUES
+
+	(@id_prod_cc, @c_interno, @no_cota, @caracteristicas, @resultados,
+	  @frecuencia_ins, @metodo_ins, @estudio_proc)
+
+END
+GO
+
+-- =============================================
+-- Autor: Carlos Fabrizio Arriola Carmona
+-- Fecha Creación: 28/Julio/2014
+-- Description: Modificación de producto para el módulo a de productos, clientes, proveedores.
+-- =============================================
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_pcp_prod_certificado_modificar') AND type in (N'P', N'PC'))
+	DROP PROCEDURE dbo.sp_pcp_prod_certificado_modificar
+GO
+
+CREATE PROCEDURE sp_pcp_prod_certificado_modificar
+	
+	@id_prod_cc			INT,
+	@no_cota			NVARCHAR(10),
+	@caracteristicas	NVARCHAR(250),
+	@resultados			NVARCHAR(250),
+	@frecuencia_ins		NVARCHAR(250),
+	@metodo_ins			NVARCHAR(250),
+	@estudio_proc		NVARCHAR(250)
+
+AS
+BEGIN
+
+	SET NOCOUNT ON;
+
+	  UPDATE producto_cc
+		SET no_cota         = @no_cota,
+			caracteristicas = @caracteristicas,
+			resultados      = @resultados,
+			frecuencia_ins  = @frecuencia_ins,
+			metodo_ins      = @metodo_ins,
+			estudio_proc    = @estudio_proc
+
+		WHERE id_prod_cc = @id_prod_cc
+END
+GO

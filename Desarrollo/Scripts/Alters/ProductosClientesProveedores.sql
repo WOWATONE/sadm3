@@ -183,3 +183,24 @@ GO
 ALTER TABLE Cliente
 ADD Tipo VARCHAR(20)
 GO
+
+ALTER TABLE producto_cc
+DROP COLUMN id_prod_cc
+GO
+
+ALTER TABLE producto_cc
+ADD id_prod_cc INT 
+GO
+
+ALTER TABLE producto_cc
+ADD CONSTRAINT PK_id_prod_cc PRIMARY KEY (id_prod_cc)
+GO
+
+ALTER TABLE producto_cc
+DROP CONSTRAINT UK_Producto_cc
+GO
+
+ALTER TABLE producto_cc
+ADD CONSTRAINT UK_Producto_cc UNIQUE (id_prod_cc)
+GO
+

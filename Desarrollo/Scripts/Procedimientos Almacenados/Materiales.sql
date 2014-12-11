@@ -245,18 +245,22 @@ GO
 
 CREATE PROCEDURE sp_mat_ordencomprafolio_alta
 
+	@Tipo		 VARCHAR(20),
+	@Serie		 VARCHAR(10),
 	@Consecutivo INT,
-	@mod_mod VARCHAR(40),
-	@usu_mod INT
+	@fec_mod	 DATETIME,
+	@mod_mod     VARCHAR(40),
+	@usu_mod     INT
 
 AS
 BEGIN
 
 	SET NOCOUNT ON;
 
-	INSERT INTO Folios(Tipo, Serie, Consecutivo, fec_mod, mod_mod, usu_mod)
+	INSERT INTO Folios(Tipo, Serie, Consecutivo , fec_mod, mod_mod, 
+					   usu_mod)
 
-	VALUES('ORDENCOMPRA', 'PO', @Consecutivo, GETDATE(), @mod_mod, @usu_mod)
+	VALUES(@Tipo, @Serie, @Consecutivo, @fec_mod, @mod_mod, @usu_mod)
 
 END
 GO
@@ -273,9 +277,11 @@ GO
 
 CREATE PROCEDURE sp_mat_ordencomprafolio_modificacion
 
+	@Serie		 VARCHAR(10),
 	@Consecutivo INT,
-	@usu_mod INT
-
+	@fec_mod	 DATETIME,
+	@usu_mod	 INT
+	
 AS
 BEGIN
 
@@ -284,10 +290,10 @@ BEGIN
 	UPDATE Folios
 
 	SET Consecutivo = @Consecutivo,
-	    fec_mod     = GETDATE(),
+	    fec_mod     = @fec_mod,
 		usu_mod     = @usu_mod
 		
-	WHERE Serie     = 'PO'
+	WHERE Serie     = @Serie
 END
 GO
 
