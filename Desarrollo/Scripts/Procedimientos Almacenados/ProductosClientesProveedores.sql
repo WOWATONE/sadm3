@@ -813,14 +813,15 @@ GO
 
 CREATE PROCEDURE sp_pcp_prod_certificado_alta
 	
-	@id_prod_cc			INT,
-	@c_interno			NVARCHAR(50),
-	@no_cota			NVARCHAR(10),
-	@caracteristicas	NVARCHAR(250),
-	@resultados			NVARCHAR(250),
-	@frecuencia_ins		NVARCHAR(250),
-	@metodo_ins			NVARCHAR(250),
-	@estudio_proc		NVARCHAR(250)
+	@id_prod_cc				INT,
+	@c_interno				NVARCHAR(50),
+	@no_cota				NVARCHAR(10),
+	@caracteristicas		NVARCHAR(250),
+	@resultados				NVARCHAR(250),
+	@frecuencia_ins			NVARCHAR(250),
+	@metodo_ins				NVARCHAR(250),
+	@estudio_proc	 		NVARCHAR(250),
+	@img_caracteristicas	NVARCHAR(250)
 
 AS
 BEGIN
@@ -829,12 +830,12 @@ BEGIN
 
 	INSERT INTO producto_cc
 	(id_prod_cc, c_interno, no_cota, caracteristicas, resultados, 
-	 frecuencia_ins, metodo_ins, estudio_proc)
+	 frecuencia_ins, metodo_ins, estudio_proc, img_caracteristicas)
 
 	VALUES
 
 	(@id_prod_cc, @c_interno, @no_cota, @caracteristicas, @resultados,
-	  @frecuencia_ins, @metodo_ins, @estudio_proc)
+	  @frecuencia_ins, @metodo_ins, @estudio_proc, @img_caracteristicas	)
 
 END
 GO
@@ -851,13 +852,14 @@ GO
 
 CREATE PROCEDURE sp_pcp_prod_certificado_modificar
 	
-	@id_prod_cc			INT,
-	@no_cota			NVARCHAR(10),
-	@caracteristicas	NVARCHAR(250),
-	@resultados			NVARCHAR(250),
-	@frecuencia_ins		NVARCHAR(250),
-	@metodo_ins			NVARCHAR(250),
-	@estudio_proc		NVARCHAR(250)
+	@id_prod_cc				INT,
+	@no_cota				NVARCHAR(10),
+	@caracteristicas		NVARCHAR(250),
+	@resultados				NVARCHAR(250),
+	@frecuencia_ins			NVARCHAR(250),
+	@metodo_ins				NVARCHAR(250),
+	@estudio_proc			NVARCHAR(250),
+	@img_caracteristicas	NVARCHAR(250)
 
 AS
 BEGIN
@@ -865,12 +867,13 @@ BEGIN
 	SET NOCOUNT ON;
 
 	  UPDATE producto_cc
-		SET no_cota         = @no_cota,
-			caracteristicas = @caracteristicas,
-			resultados      = @resultados,
-			frecuencia_ins  = @frecuencia_ins,
-			metodo_ins      = @metodo_ins,
-			estudio_proc    = @estudio_proc
+		SET no_cota             = @no_cota,
+			caracteristicas     = @caracteristicas,
+			resultados          = @resultados,
+			frecuencia_ins      = @frecuencia_ins,
+			metodo_ins          = @metodo_ins,
+			estudio_proc        = @estudio_proc,
+			img_caracteristicas = @img_caracteristicas
 
 		WHERE id_prod_cc = @id_prod_cc
 END
