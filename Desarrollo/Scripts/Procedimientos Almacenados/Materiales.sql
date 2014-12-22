@@ -1121,7 +1121,7 @@ AS
 BEGIN
 	SET NOCOUNT ON;
 
-	SELECT ROW_NUMBER() OVER (ORDER BY codigo)  AS num, 
+SELECT ROW_NUMBER() OVER (ORDER BY codigo)  AS num, 
 	codigo, material, TablaPivote.Categoria, TablaPivote.tipo, TablaPivote.pvf,
 	TablaPivote.stockmin, TablaPivote.stockmax, 
 	[RMP01], [MPC02], [MPNC01], [MPS03]
