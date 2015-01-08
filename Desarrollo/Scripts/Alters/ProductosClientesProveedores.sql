@@ -204,3 +204,10 @@ ALTER TABLE producto_cc
 ADD CONSTRAINT UK_Producto_cc UNIQUE (id_prod_cc)
 GO
 
+ALTER TABLE producto
+ADD comen VARCHAR(MAX)
+GO
+
+ALTER TABLE datosr
+ADD comen VARCHAR(MAX)
+GO
