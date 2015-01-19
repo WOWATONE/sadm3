@@ -95,46 +95,83 @@ GO
 
 CREATE PROCEDURE sp_req_requerimientos_mensuales_consulta
 
-	@FechaGenerada		DATETIME2,
-	@SesionId			UNIQUEIDENTIFIER
+	@FechaGenerada				DATETIME2,
+	@FechaGeneradaDiaAnterior   DATETIME2,
+	@SesionId					UNIQUEIDENTIFIER,
+	@Mes						NVARCHAR(15),
+	@Año						SMALLINT
+
 AS
 BEGIN
 
 SET NOCOUNT ON;
 
-SELECT PRO.c_interno, REQ.Requerimiento, REQ.PlanProduccion,
-PRO.stockmin, PRO.material_codigo1, TIN.inven
+DELETE 
+FROM RequerimientosMensuales
+WHERE FechaGenerada <= @FechaGeneradaDiaAnterior
+
+INSERT INTO RequerimientosMensuales 
+(SesionId, FechaGenerada, CodigoInterno, Requerimiento, InventarioProd,
+StockMin, HorasSMin, PlanProduccion, PiezasProducidas, PEnviado,
+RestaPorEnviar, PPorProducir, HProd, ResInv, ResPorProducir,
+Resina, HorasInven)
+
+SELECT @SesionId, @FechaGenerada, PRO.c_interno AS CodigoInterno, REQ.Requerimiento, TIN.inven AS InventarioProd,
+PRO.stockmin AS StockMin, 0 AS HorasSMin, REQ.PlanProduccion AS PlanProduccion, ETISUB.PiezasProducidas, 0 AS PEnviado,
+0 AS RestaPorEnviar, 0 AS PPorProducir, 0 AS HProd, 0 AS ResInv, 0 AS ResPorProducir,
+PRO.material_codigo1 AS Resina, 0 AS HorasInven
 FROM producto AS PRO 
 LEFT JOIN Requerimientos AS REQ ON PRO.c_interno = REQ.c_interno AND
-REQ.Mes = 'OCTUBRE' AND REQ.Año = 2014
+REQ.Mes = @Mes AND REQ.Año = @Año
 LEFT JOIN tinven AS TIN ON TIN.c_interno = PRO.c_interno
-
+LEFT JOIN 
+(
+SELECT ETI.c_interno, SUM(piezas) AS PiezasProducidas
+FROM etiquetaspallete AS ETI
+GROUP BY ETI.c_interno
+) AS ETISUB ON ETISUB.c_interno = PRO.c_interno
 WHERE PRO.estado = 'A' 
 
-SELECT *
-FROM PRODUCTO
+SELECT REQMEN.CodigoInterno, ISNULL(REQMEN.Requerimiento, 'NO REQ') AS Requerimiento, REQMEN.InventarioProd,
+REQMEN.StockMin, 
+ CASE 
+      WHEN REQMEN.InventarioProd < REQMEN.StockMin 
+	  THEN 
+		(REQMEN.StockMin - REQMEN.InventarioProd) / ((3600/PROD.cicloreal) * PROD.cavidad) +
 
-SELECT *
-FROM tinven
+		((REQMEN.StockMin - REQMEN.InventarioProd) / ((3600/PROD.cicloreal) * PROD.cavidad)) * (1 -(PROD.eficiencia / 100))
+	  ELSE 0
 
---	INSERT INTO table2 (WEEK, NoTrans, Spend)
---SELECT @WEEK, Transactions, Spend
---FROM table1 (NOLOCK)
+END AS HorasSMin, 
+REQMEN.PlanProduccion, REQMEN.PiezasProducidas, REQMEN.PEnviado
+
+
+, REQMEN.RestaPorEnviar, 
+REQMEN.PPorProducir, REQMEN.HProd, REQMEN.ResInv, REQMEN.ResPorProducir,
+REQMEN.Resina, REQMEN.HorasInven
+FROM RequerimientosMensuales AS REQMEN
+LEFT JOIN producto AS PROD ON REQMEN.CodigoInterno = PROD.c_interno
+
+
+WHERE SesionId = @SesionId  
 
 END
 GO
 
-SELECT *
-FROM producto
-WHERE PRO.estado = 'A' 
+DECLARE @SesionId uniqueidentifier
+SET @SesionId = NEWID()
+
+EXEC sp_req_requerimientos_mensuales_consulta '2015/01/17', '2015/01/16', @SesionId, 'OCTUBRE', 2014
 
 select *
-from requerimientos
+from RequerimientosMensuales
 
-select c_interno, sum(2500) AS PiezasProducidas
-from etiquetaspallete
-group by c_interno
+delete from
+RequerimientosMensuales
+
+select *
+from producto
 
 
 select *
-from etiquetaspallete
+from datos
