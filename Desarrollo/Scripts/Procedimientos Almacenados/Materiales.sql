@@ -1141,3 +1141,35 @@ PIVOT
 END
 GO
 
+-- =============================================
+-- Autor: Carlos Fabrizio Arriola Carmona
+-- Fecha Creación: 14/Enero/2015
+-- Descripción: Acumula la cantidad en el silo.
+-- =============================================
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_mat_AcumularMaterialSilo') AND type in (N'P', N'PC'))
+	DROP PROCEDURE dbo.sp_mat_AcumularMaterialSilo
+GO
+
+CREATE PROCEDURE sp_mat_AcumularMaterialSilo
+
+	@codigosilo				NVARCHAR(50),
+	@inven					INT
+AS
+BEGIN
+	SET NOCOUNT ON;
+	
+	DECLARE @invenAcumulado AS INT
+
+	SELECT @invenAcumulado = inven
+	FROM silo
+	WHERE codigosilo = @codigosilo 
+
+	SET @invenAcumulado = @invenAcumulado + @inven
+
+	UPDATE silo
+			SET 
+				inven		 = @invenAcumulado
+			WHERE codigosilo = @codigosilo
+END
+GO

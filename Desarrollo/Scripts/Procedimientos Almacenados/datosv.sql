@@ -167,3 +167,31 @@ BEGIN
 			WHERE conse2           = @conse2
 END
 GO
+
+-- =============================================
+-- Autor: Carlos Fabrizio Arriola Carmona
+-- Fecha Creación: 14/Enero/2015
+-- Descripción: Establece a 0 la cantidad del material.
+-- =============================================
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_datosv_VaciarMaterial') AND type in (N'P', N'PC'))
+	DROP PROCEDURE dbo.sp_datosv_VaciarMaterial
+GO
+
+CREATE PROCEDURE sp_datosv_VaciarMaterial
+
+		@conse2				INT,
+		@stockv				NVARCHAR(50)
+
+AS
+BEGIN
+
+	SET NOCOUNT ON;
+
+		UPDATE  datosv
+			SET   inven            = 0 ,
+				  stockv           = @stockv
+			WHERE conse2           = @conse2
+
+END
+GO
