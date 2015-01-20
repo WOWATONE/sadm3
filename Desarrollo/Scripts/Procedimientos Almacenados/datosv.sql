@@ -171,7 +171,7 @@ GO
 -- =============================================
 -- Autor: Carlos Fabrizio Arriola Carmona
 -- Fecha Creación: 14/Enero/2015
--- Descripción: Establece a 0 la cantidad del material.
+-- Descripción: Procedimiento almacenado para establecer a nulo algunos valores.
 -- =============================================
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_datosv_VaciarMaterial') AND type in (N'P', N'PC'))
@@ -180,8 +180,12 @@ GO
 
 CREATE PROCEDURE sp_datosv_VaciarMaterial
 
+		@ordenfabricacion   NVARCHAR(50),
+		@ubicacion			NVARCHAR(50),
 		@conse2				INT,
-		@stockv				NVARCHAR(50)
+		@stockv				NVARCHAR(50),
+		@CantLoteRestante   FLOAT,
+		@LoteIntAcumulado	NVARCHAR(50)	
 
 AS
 BEGIN
@@ -189,9 +193,46 @@ BEGIN
 	SET NOCOUNT ON;
 
 		UPDATE  datosv
-			SET   inven            = 0 ,
-				  stockv           = @stockv
-			WHERE conse2           = @conse2
+			SET   inven                = 0 ,
+			      ordenfabricacion     = @ordenfabricacion,
+				  ubicacion			   = @ubicacion,  
+				  stockv               = @stockv,
+				  CantLoteRestante     = @CantLoteRestante,
+				  LoteIntAcumulado     = @LoteIntAcumulado
+			WHERE conse2               = @conse2
+
+END
+GO
+
+-- =============================================
+-- Autor: Carlos Fabrizio Arriola Carmona
+-- Fecha Creación: 19/Enero/2015
+-- Descripción: Procedimiento utilizado para sumar cantidades de lotes.
+-- =============================================
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_datosv_SumarLotes') AND type in (N'P', N'PC'))
+	DROP PROCEDURE dbo.sp_datosv_SumarLotes
+GO
+
+CREATE PROCEDURE sp_datosv_SumarLotes
+
+		@ordenfabricacion   NVARCHAR(50),
+		@ubicacion			NVARCHAR(50),
+		@conse2				INT,
+		@stockv				NVARCHAR(50),
+		@inven				FLOAT
+
+AS
+BEGIN
+
+	SET NOCOUNT ON;
+
+		UPDATE  datosv
+			SET   inven             = @inven ,
+			      ordenfabricacion  = @ordenfabricacion,
+				  ubicacion			= @ubicacion,  
+				  stockv            = @stockv
+			WHERE conse2            = @conse2
 
 END
 GO

@@ -152,7 +152,6 @@ REQMEN.Resina, REQMEN.HorasInven
 FROM RequerimientosMensuales AS REQMEN
 LEFT JOIN producto AS PROD ON REQMEN.CodigoInterno = PROD.c_interno
 
-
 WHERE SesionId = @SesionId  
 
 END
@@ -173,5 +172,5 @@ select *
 from producto
 
 
-select *
-from datos
+SELECT SUM(total)
+FROM datos
