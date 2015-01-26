@@ -1,35 +1,52 @@
 -- =============================================
 -- Autor: Carlos Fabrizio Arriola Carmona
 -- Fecha Creación: 13/Noviembre/2014
--- Descripción: Modificacion de la columna cmcliente para agregar los productos ligados
--- a un molde.
+-- Descripción: Alta de la relacion molde-producto.
 -- =============================================
 
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_moldesequipos_productomolde_modificacion') AND type in (N'P', N'PC'))
-	DROP PROCEDURE dbo.sp_moldesequipos_productomolde_modificacion
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_moldesequipos_productomolde_alta') AND type in (N'P', N'PC'))
+	DROP PROCEDURE dbo.sp_moldesequipos_productomolde_alta
 GO
 
-CREATE PROCEDURE sp_moldesequipos_productomolde_modificacion
+CREATE PROCEDURE sp_moldesequipos_productomolde_alta
 
-	@cminterno	        NVARCHAR(50),
-	@ProductoClave		NVARCHAR(50)
+	@IdMolde	        INT,
+	@c_interno			NVARCHAR(50)
 
 AS
 BEGIN
 
 	SET NOCOUNT ON;
 
-	DECLARE @cmcliente	NVARCHAR(250)
+	INSERT INTO ProductosMoldes (IdMolde, c_interno)
 
-	SET @cmcliente = (SELECT cmcliente 
-					  FROM moldes 
-					  WHERE cminterno = @cminterno)
+	VALUES(@IdMolde, @c_interno)  
 
-	 UPDATE moldes
-		SET 
-			cmcliente = @cmcliente + @ProductoClave + '/ '
+END
+GO
 
-			WHERE cminterno = @cminterno
+-- =============================================
+-- Autor: Carlos Fabrizio Arriola Carmona
+-- Fecha Creación: 13/Noviembre/2014
+-- Descripción: Baja de registro de la tabla ProductosMoldes.
+-- =============================================
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_moldesequipos_productomolde_eliminar') AND type in (N'P', N'PC'))
+	DROP PROCEDURE dbo.sp_moldesequipos_productomolde_eliminar
+GO
+
+CREATE PROCEDURE sp_moldesequipos_productomolde_eliminar
+
+	@c_interno			NVARCHAR(50)
+
+AS
+BEGIN
+
+	SET NOCOUNT ON;
+
+	DELETE FROM
+	ProductosMoldes
+	WHERE c_interno	 = @c_interno	
 
 END
 GO
