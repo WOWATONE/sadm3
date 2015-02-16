@@ -337,29 +337,31 @@ GO
 
 CREATE PROCEDURE sp_mat_ordencompra_alta
 
-	@norden nvarchar(50),
-	@estatus nvarchar(50),
-	@tipoorden nvarchar(50),
-	@proveedor nvarchar(50),
-	@dpto nvarchar(50),
-	@condpago nvarchar(50),
-	@confpedido nvarchar(50),
-	@tipocompra nvarchar(50),
-	@fechaped datetime,
-	@fechaent datetime,
-	@moneda nvarchar(50),
-	@comen ntext,
-    @autdcompras nvarchar(50),
-	@autdfinanzas nvarchar(50),
-	@autdproduccion nvarchar(50),
-	@resprecibe nvarchar(50),
-	@subtotal nvarchar(50),
-	@iva nvarchar(50),
-	@totalorden nvarchar(50),
-	@Elaboro int,
-	@FechaEntrada datetime,
-	@Factura		 NVARCHAR(50),
-	@NumeroPedimento NVARCHAR(50)
+	@norden				NVARCHAR(50),
+	@estatus			NVARCHAR(50),
+	@tipoorden			NVARCHAR(50),
+	@proveedor			NVARCHAR(50),
+	@dpto				NVARCHAR(50),
+	@condpago			NVARCHAR(50),
+	@confpedido			NVARCHAR(50),
+	@tipocompra			NVARCHAR(50),
+	@fechaped			DATETIME,
+	@fechaent			DATETIME,
+	@moneda				NVARCHAR(50),
+	@comen				NTEXT,
+    @autdcompras		NVARCHAR(50),
+	@autdfinanzas		NVARCHAR(50),
+	@autdproduccion		NVARCHAR(50),
+	@resprecibe			NVARCHAR(50),
+	@subtotal			NVARCHAR(50),
+	@iva				NVARCHAR(50),
+	@totalorden			NVARCHAR(50),
+	@Elaboro			INT,
+	@FechaEntrada		DATETIME,
+	@Factura			NVARCHAR(50),
+	@NumeroPedimento	NVARCHAR(50),
+	@ProveedorId		INT,
+	@CuentaContDepto	NVARCHAR(50)
 
 AS
 BEGIN
@@ -371,14 +373,14 @@ BEGIN
 	 condpago, confpedido, tipocompra, fechaped, fechaent,
 	 moneda, comen, autdcompras, autdfinanzas, autdproduccion,
 	 resprecibe, subtotal, iva, totalorden, Elaboro,
-	 FechaEntrada, Factura, NumeroPedimento)
+	 FechaEntrada, Factura, NumeroPedimento, ProveedorId, CuentaContDepto)
 
 	VALUES
 	(@norden, @estatus, @tipoorden, @proveedor, @dpto,
 	 @condpago, @confpedido, @tipocompra, @fechaped, @fechaent,
 	 @moneda, @comen, @autdcompras, @autdfinanzas, @autdproduccion,
 	 @resprecibe, @subtotal, @iva, @totalorden, @Elaboro,
-	 @FechaEntrada, @Factura, @NumeroPedimento)
+	 @FechaEntrada, @Factura, @NumeroPedimento, @ProveedorId, @CuentaContDepto)
 END
 GO
 
@@ -1108,7 +1110,7 @@ GO
 -- =============================================
 -- Autor: Carlos Fabrizio Arriola Carmona
 -- Fecha Creación: 01/Noviembre/2014
--- Descripción: Consulta el inventario de materiales por almacen.
+-- Descripción: Consulta el inventario de materiales por almacén.
 -- =============================================
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_mat_ConsultaMaterialPorAlmacen') AND type in (N'P', N'PC'))
@@ -1121,7 +1123,7 @@ AS
 BEGIN
 	SET NOCOUNT ON;
 
-SELECT ROW_NUMBER() OVER (ORDER BY codigo)  AS num, 
+SELECT ROW_NUMBER() OVER (ORDER BY codigo) AS num, 
 	codigo, material, TablaPivote.Categoria, TablaPivote.tipo, TablaPivote.pvf,
 	TablaPivote.stockmin, TablaPivote.stockmax, 
 	[RMP01], [MPC02], [MPNC01], [MPS03]
@@ -1131,7 +1133,7 @@ FROM
 	MAT.stockmin, MAT.stockmax, DAT.inven, DAT.stockv
 	FROM datosv AS DAT
 	LEFT JOIN material AS MAT
-	ON DAT.codigo = MAT.codigo) AS SourceTable
+	ON DAT.codigo = MAT.codigo) AS TablaFuente
 PIVOT
 (
 	SUM(inven)

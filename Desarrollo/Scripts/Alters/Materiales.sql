@@ -145,3 +145,20 @@ GO
 ALTER TABLE ocompra
 ADD NumeroPedimento NVARCHAR(50)
 GO
+
+ALTER TABLE ocompra
+ADD ProveedorId INT
+GO
+
+ALTER TABLE ocompra
+ADD CuentaContDepto NVARCHAR(50)
+GO
+
+ALTER TABLE material
+ADD ProveedorId INT
+GO
+
+ALTER TABLE proveedormaterial
+ADD ProveedorId INT
+GO
+
