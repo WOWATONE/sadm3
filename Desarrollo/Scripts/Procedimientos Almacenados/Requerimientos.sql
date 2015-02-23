@@ -434,3 +434,53 @@ WHERE SesionId = @SesionId
 
 END
 GO
+
+-- =============================================
+-- Autor: Carlos Fabrizio Arriola Carmona
+-- Fecha Creación: 06/Enero/2015
+-- Descripción: Alta de requerimiento.
+-- =============================================
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_req_requerimientos_alta2') AND type in (N'P', N'PC'))
+	DROP PROCEDURE dbo.sp_req_requerimientos_alta2
+GO
+
+CREATE PROCEDURE sp_req_requerimientos_alta2
+
+		@Mes	NVARCHAR(15)
+AS
+BEGIN
+
+SET NOCOUNT ON;
+
+MERGE RequerimientosActualizados AS ACT
+USING Requerimientos AS REQ
+ON ACT.c_interno = REQ.c_interno AND 
+   ACT.MES		 = REQ.MES		 AND
+   ACT.Año       = REQ.Año
+
+--WHEN MATCHED AND
+--  REQ.Requerimiento + REQ.PlanProduccion = 0
+--  THEN DELETE
+
+WHEN MATCHED AND (ACT.Requerimiento != REQ.Requerimiento) THEN
+  UPDATE
+	SET ACT.Requerimiento  = REQ.Requerimiento
+
+WHEN NOT MATCHED BY TARGET THEN
+INSERT (c_interno, Mes, Año, Estatus, Requerimiento,
+		PlanProduccion, FechaEntrada, MesPlanProduccion)
+
+VALUES (REQ.c_interno, REQ.Mes, REQ.Año, REQ.Estatus, REQ.Requerimiento,
+		REQ.PlanProduccion, REQ.FechaEntrada, REQ.MesPlanProduccion);
+
+--WHEN NOT MATCHED BY SOURCE
+--  THEN DELETE
+
+ --WHEN NOT MATCHED BY TARGET
+ -- THEN DELETE;
+
+SELECT * FROM RequerimientosActualizados
+
+END
+GO

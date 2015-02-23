@@ -10,41 +10,41 @@ GO
 
 CREATE PROCEDURE sp_mat_materiales_alta
 
-	@codigo nvarchar(50),
-	@Categoria varchar(30),
-	@nombre nvarchar(200),
-	@tipo   nvarchar(50),
-	@caducidad nvarchar(50),
-	@color nvarchar(50),
-	@umedida nvarchar(50),
-	@tipomateria nvarchar(50),
-	@active nvarchar(50),
-	@presentacion nvarchar(50),
-	@cantidad nvarchar(50),
-	@comentarios nvarchar(50),
-	@cliente nvarchar(50),
-	@proveedor nvarchar(50),
-	@propcliente nvarchar(50),
-	@foto nvarchar(200),
+	@codigo				NVARCHAR(50),
+	@Categoria			VARCHAR(30),
+	@nombre				NVARCHAR(200),
+	@tipo				NVARCHAR(50),
+	@caducidad			NVARCHAR(50),
+	@color				NVARCHAR(50),
+	@umedida			NVARCHAR(50),
+	@tipomateria		NVARCHAR(50),
+	@active				NVARCHAR(50),
+	@presentacion		NVARCHAR(50),
+	@cantidad			NVARCHAR(50),
+	@comentarios		NVARCHAR(50),
+	@cliente			NVARCHAR(50),
+	@proveedor			NVARCHAR(50),
+	@propcliente		NVARCHAR(50),
+	@foto				NVARCHAR(200),
+	@stockmin			FLOAT, -- Stock y Movimientos
+	@stockmax			FLOAT,
+	@inven				FLOAT,
+	@moneda				NVARCHAR(50),
+	@cuentacontable		NVARCHAR(50),
+	@desccuentacontable NVARCHAR(50),
+	@pvf				NVARCHAR(50),
+	@mod_alta			VARCHAR(40),
+	@usu_alta			INT,
+	@ProveedorId		INT,
+	@dpto				NVARCHAR(50), -- modif
+	@quien				NVARCHAR(50),
+	@clave				NVARCHAR(50),
+	@fecha				DATETIME,
+	@hora				DATETIME,
+	@modificacion		NVARCHAR(200),
+	@clienteproveedor	NVARCHAR(50),
+	@modulo				NVARCHAR(50)
 
-	@stockmin float, -- Stock y Movimientos
-	@stockmax float,
-	@inven float,
-	@moneda nvarchar(50),
-	@cuentacontable nvarchar(50),
-	@desccuentacontable nvarchar(50),
-	@pvf nvarchar(50),
-	@mod_alta varchar(40),
-	@usu_alta int,
-
-	@dpto nvarchar(50), -- modif
-	@quien nvarchar(50),
-	@clave nvarchar(50),
-	@fecha datetime,
-	@hora datetime,
-	@modificacion nvarchar(200),
-	@clienteproveedor nvarchar(50),
-	@modulo nvarchar(50)
 AS
 BEGIN
 
@@ -59,7 +59,8 @@ BEGIN
 	  umedida, tipomateria, active, presentacion, cantidad,
 	  comentarios, cliente, proveedor, propcliente, foto,
 	  stockmin, stockmax, inven, moneda, cuentacontable,
-	  desccuentacontable, pvf, fec_alta, mod_alta, usu_alta)
+	  desccuentacontable, pvf, fec_alta, mod_alta, usu_alta,
+	  ProveedorId)
 
 	  VALUES
 
@@ -67,7 +68,8 @@ BEGIN
 	   @umedida, @tipomateria, @active, @presentacion, @cantidad,
 	   @comentarios, @cliente, @proveedor, @propcliente, @foto,
 	   @stockmin, @stockmax, @inven, @moneda, @cuentacontable,
-	   @desccuentacontable, @pvf, @fechaActualServidor, @mod_alta, @usu_alta)
+	   @desccuentacontable, @pvf, @fechaActualServidor, @mod_alta, @usu_alta,
+	   @ProveedorId)
 
 	   DECLARE @precioProveedor float 
 	   SET @precioProveedor = CAST(@pvf as nvarchar(max))
@@ -116,6 +118,7 @@ CREATE PROCEDURE sp_mat_materiales_modificacion
 	@proveedor	        NVARCHAR(50),
 	@propcliente        NVARCHAR(50),
 	@foto               NVARCHAR(200),
+	@ProveedorId		INT,
 	@stockmin	        FLOAT, -- Stock y Movimientos
 	@stockmax	        FLOAT,
 	@inven		        FLOAT,
@@ -159,7 +162,8 @@ BEGIN
 			pvf = @pvf,
 			fec_mod = @fec_mod,
 			mod_mod = @mod_mod,
-			usu_mod = @usu_mod
+			usu_mod = @usu_mod,
+			ProveedorId = @ProveedorId
 
 			WHERE codigo = @codigo
 
@@ -212,9 +216,9 @@ CREATE PROCEDURE sp_mat_proveedormaterial_alta
 	@cliente		NVARCHAR(50),
 	@mod_alta		VARCHAR(15),
 	@usu_alta		INT,
-	@fec_alta		DATETIME
+	@fec_alta		DATETIME,
+	@ProveedorId	INT
 
-	
 AS
 BEGIN
 
@@ -223,12 +227,12 @@ BEGIN
 	INSERT INTO proveedormaterial
 	(nombre, codigo, precio, umedida, tipo,
 	 propcliente, cliente, fechaalta, mod_alta, usu_alta,
-	 fec_alta)
+	 fec_alta, ProveedorId)
 
 	VALUES
 	(@nombre, @codigo, @precio, @umedida, @tipo, 
 	 @propcliente, @cliente , @fec_alta, @mod_alta, @usu_alta,
-	 @fec_alta)
+	 @fec_alta, @ProveedorId)
 
 END
 GO
@@ -396,20 +400,22 @@ GO
 
 CREATE PROCEDURE sp_mat_ordencompra_modificacion
 
-	@norden nvarchar(50),
-	@tipoorden nvarchar(50),
-	@proveedor nvarchar(50),
-	@dpto nvarchar(50),
-	@condpago nvarchar(50),
-	@confpedido nvarchar(50),
-	@tipocompra nvarchar(50),
-	@fechaped datetime,
-	@fechaent datetime,
-	@moneda nvarchar(50),
-	@comen ntext,
-	@subtotal nvarchar(50),
-	@iva nvarchar(50),
-	@totalorden nvarchar(50)
+	@norden				NVARCHAR(50),
+	@tipoorden			NVARCHAR(50),
+	@proveedor			NVARCHAR(50),
+	@dpto				NVARCHAR(50),
+	@condpago			NVARCHAR(50),
+	@confpedido			NVARCHAR(50),
+	@tipocompra			NVARCHAR(50),
+	@fechaped			DATETIME,
+	@fechaent			DATETIME,
+	@moneda				NVARCHAR(50),
+	@comen				NTEXT,
+	@subtotal			NVARCHAR(50),
+	@iva				NVARCHAR(50),
+	@totalorden			NVARCHAR(50),
+	@ProveedorId		INT,
+	@CuentaContDepto	NVARCHAR(50)
 
 AS
 BEGIN
@@ -418,19 +424,21 @@ BEGIN
 
 	UPDATE ocompra
 		SET 
-		    tipoorden   = @tipoorden,
-			proveedor   = @proveedor,
-			dpto	    = @dpto,
-			condpago    = @condpago,
-			confpedido  = @confpedido,
-			tipocompra  = @tipocompra,
-			fechaped    = @fechaped,
-			fechaent    = @fechaent,
-			moneda      = @moneda,
-			comen       = @comen,
-			subtotal    = @subtotal,
-			iva         = @iva,
-			totalorden  = @totalorden
+		    tipoorden		= @tipoorden,
+			proveedor		= @proveedor,
+			dpto			= @dpto,
+			condpago		= @condpago,
+			confpedido		= @confpedido,
+			tipocompra		= @tipocompra,
+			fechaped		= @fechaped,
+			fechaent		= @fechaent,
+			moneda			= @moneda,
+			comen			= @comen,
+			subtotal		= @subtotal,
+			iva				= @iva,
+			totalorden		= @totalorden,
+			ProveedorId		= @ProveedorId,
+			CuentaContDepto = @CuentaContDepto
 
 		WHERE norden = @norden
 END
