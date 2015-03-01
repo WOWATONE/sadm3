@@ -437,7 +437,7 @@ GO
 
 -- =============================================
 -- Autor: Carlos Fabrizio Arriola Carmona
--- Fecha Creación: 06/Enero/2015
+-- Fecha Creación: 20/Febrero/2015
 -- Descripción: Alta de requerimiento.
 -- =============================================
 
@@ -481,6 +481,100 @@ VALUES (REQ.c_interno, REQ.Mes, REQ.Año, REQ.Estatus, REQ.Requerimiento,
  -- THEN DELETE;
 
 SELECT * FROM RequerimientosActualizados
+
+END
+GO
+
+-- =============================================
+-- Autor: Carlos Fabrizio Arriola Carmona
+-- Fecha Creación: 23/Enero/2015
+-- Descripción: Modificación de requerimiento.
+-- =============================================
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_req_requerimiento_modificacion') AND type in (N'P', N'PC'))
+	DROP PROCEDURE dbo.sp_req_requerimiento_modificacion
+GO
+
+CREATE PROCEDURE sp_req_requerimiento_modificacion
+
+		@c_interno		NVARCHAR(50),
+		@Mes			NVARCHAR(15),
+		@Año			SMALLINT,
+		@Requerimiento  INT
+AS
+BEGIN
+
+SET NOCOUNT ON;
+
+
+	UPDATE Requerimientos
+	SET
+		Requerimiento  = @Requerimiento
+	
+	WHERE c_interno = @c_interno AND
+		  Mes		= @Mes		 AND
+		  Año		= @Año
+
+END
+GO
+
+-- =============================================
+-- Autor: Carlos Fabrizio Arriola Carmona
+-- Fecha Creación: 23/Enero/2015
+-- Descripción: Modificación de plan de producción.
+-- =============================================
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_req_planproduccion_modificacion') AND type in (N'P', N'PC'))
+	DROP PROCEDURE dbo.sp_req_planproduccion_modificacion
+GO
+
+CREATE PROCEDURE sp_req_planproduccion_modificacion
+
+		@c_interno		NVARCHAR(50),
+		@Mes			NVARCHAR(15),
+		@Año			SMALLINT,
+		@PlanProduccion INT
+AS
+BEGIN
+
+SET NOCOUNT ON;
+
+	UPDATE Requerimientos
+	SET
+		PlanProduccion  = @PlanProduccion
+	
+	WHERE c_interno = @c_interno AND
+		  Mes		= @Mes		 AND
+		  Año		= @Año
+
+END
+GO
+
+-- =============================================
+-- Autor: Carlos Fabrizio Arriola Carmona
+-- Fecha Creación: 06/Enero/2015
+-- Descripción: Eliminación de requerimientos en base al mes, año y producto.
+-- =============================================
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_req_requerimientos_eliminar2') AND type in (N'P', N'PC'))
+	DROP PROCEDURE dbo.sp_req_requerimientos_eliminar2
+GO
+
+CREATE PROCEDURE sp_req_requerimientos_eliminar2
+
+	@c_interno   NVARCHAR  (50),
+	@Mes		 NVARCHAR  (15),
+	@Año		 SMALLINT
+AS
+BEGIN
+
+SET NOCOUNT ON;
+
+	DELETE FROM
+	Requerimientos
+	WHERE c_interno = @c_interno AND
+	      Mes		= @Mes		 AND
+		  Año		= @Año
 
 END
 GO

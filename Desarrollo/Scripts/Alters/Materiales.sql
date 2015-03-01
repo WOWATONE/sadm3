@@ -162,3 +162,19 @@ ALTER TABLE proveedormaterial
 ADD ProveedorId INT
 GO
 
+ALTER TABLE silo
+DROP COLUMN inven
+GO
+
+ALTER TABLE silo
+DROP COLUMN cargainicial
+GO
+
+ALTER TABLE silo
+ADD inven FLOAT
+GO
+
+ALTER TABLE silo
+ADD cargainicial FLOAT
+GO
+

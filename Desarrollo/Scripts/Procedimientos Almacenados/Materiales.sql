@@ -849,8 +849,8 @@ CREATE PROCEDURE sp_mat_modificacion_silo
 	@estatus			NVARCHAR(50),
 	@material_codigo	NVARCHAR(50),
 	@material_tipo		NVARCHAR(50),
-	@cargainicial		INT,
-	@inven				INT,
+	@cargainicial		FLOAT,
+	@inven				FLOAT,
 	@datosv_lprove		NVARCHAR(50)
 
 AS
@@ -1164,12 +1164,12 @@ GO
 CREATE PROCEDURE sp_mat_AcumularMaterialSilo
 
 	@codigosilo				NVARCHAR(50),
-	@inven					INT
+	@inven					FLOAT
 AS
 BEGIN
 	SET NOCOUNT ON;
 	
-	DECLARE @invenAcumulado AS INT
+	DECLARE @invenAcumulado AS FLOAT
 
 	SELECT @invenAcumulado = inven
 	FROM silo
