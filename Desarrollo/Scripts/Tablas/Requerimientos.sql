@@ -32,18 +32,3 @@ CREATE TABLE RequerimientosMensuales
 	HorasInven			DECIMAL(11,2)
 )
 GO
-
-CREATE TABLE RequerimientosActualizados
-(
-	c_interno			NVARCHAR(50),
-	Mes					NVARCHAR(15),
-	Año					SMALLINT,
-	Estatus				NVARCHAR(50),
-	Requerimiento		INT,
-	PlanProduccion		INT,
-	FechaEntrada		DATE,
-	MesPlanProduccion	NVARCHAR(15)
-)
-GO
-
-

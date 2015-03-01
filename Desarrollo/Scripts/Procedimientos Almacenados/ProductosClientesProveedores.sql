@@ -441,7 +441,8 @@ CREATE PROCEDURE sp_pcp_cliente_alta
 	@tax_id		NVARCHAR(50),
 	@codigopais NVARCHAR(50),
 	@monedapais NVARCHAR(50),
-	@cod_postal NVARCHAR(50)
+	@cod_postal NVARCHAR(50),
+	@num_ob10	NVARCHAR(50)
 
 AS
 BEGIN
@@ -461,7 +462,7 @@ BEGIN
 	  cuenta1, cep1, credito, metodopago, iva,
 	  descuento, cep2, fec_alta, mod_alta, usu_alta,
 	  Tipo, col_fact, tax_id, codigopais, monedapais,
-	  cod_postal)
+	  cod_postal, num_ob10)
 
 	  VALUES
 	  (@nombre, @nombre_comp, @VF, @c_proveedor, @cuentacontable,
@@ -475,7 +476,7 @@ BEGIN
 	   @cuenta1, @cep1, @credito, @metodopago, @iva,
 	   @descuento, @cep2, GETDATE(), @mod_alta, @usu_alta,
 	   @Tipo, @col_fact, @tax_id, @codigopais, @monedapais,
-	   @cod_postal)
+	   @cod_postal, @num_ob10)
 
 	   EXEC sp_movimientos_alta @dpto, @quien, @clave, @fecha, @hora,
 						    @codigo, @modificacion, @ordenfabricacion, @ordencliente, @clienteproveedor,
@@ -566,7 +567,8 @@ CREATE PROCEDURE sp_pcp_cliente_modificacion
 	@tax_id		NVARCHAR(50),
 	@codigopais NVARCHAR(50),
 	@monedapais NVARCHAR(50),
-	@cod_postal NVARCHAR(50)
+	@cod_postal NVARCHAR(50),
+	@num_ob10	NVARCHAR(50)
 
 AS
 BEGIN
@@ -630,7 +632,8 @@ BEGIN
 			tax_id	 = @tax_id,
 			codigopais = @codigopais,
 			monedapais = @monedapais,
-			cod_postal = @cod_postal	
+			cod_postal = @cod_postal,	
+			num_ob10  = @num_ob10
 			 
 			WHERE nombre = @nombre
 

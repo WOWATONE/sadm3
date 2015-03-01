@@ -10,25 +10,26 @@ GO
 
 CREATE PROCEDURE sp_datosv_alta
 
-	@conse int,
-	@material nvarchar(200),
-	@cantidad nvarchar(50),
-	@fecha datetime,
-	@proveedor nvarchar(50),
-	@entrada nvarchar(50),
-    @codigo nvarchar(50),
-	@lprove nvarchar(50),
-	@norden nvarchar(50),
-	@stockv nvarchar(50),
-	@inven float,
-	@estado nvarchar(50),
-	@comentarios ntext,
-	@ordenfabricacion nvarchar(50),
-	@ubicacion nvarchar(50),
-	@ban1 nvarchar(50),
-	@ban2 nvarchar(50),
-	@ban3 nvarchar(50),
-	@LoteInterno nvarchar(50)
+	@conse				INT,
+	@material			NVARCHAR(200),
+	@cantidad			NVARCHAR(50),
+	@fecha				DATETIME,
+	@proveedor			NVARCHAR(50),
+	@entrada			NVARCHAR(50),
+    @codigo				NVARCHAR(50),
+	@lprove				NVARCHAR(50),
+	@norden				NVARCHAR(50),
+	@stockv				NVARCHAR(50),
+	@inven				FLOAT,
+	@estado				NVARCHAR(50),
+	@comentarios		NTEXT,
+	@ordenfabricacion	NVARCHAR(50),
+	@ubicacion			NVARCHAR(50),
+	@ban1				NVARCHAR(50),
+	@ban2				NVARCHAR(50),
+	@ban3				NVARCHAR(50),
+	@LoteInterno		NVARCHAR(50),
+	@ReferenciaLoteId	INT	
 	
 AS
 BEGIN
@@ -40,16 +41,16 @@ BEGIN
 	(conse, material, cantidad, fecha, proveedor,
 	 entrada, codigo, lprove, norden, stockv,
 	 inven, estado, comentarios, ordenfabricacion, ubicacion,
-	 ban1, ban2, ban3, LoteInterno)
+	 ban1, ban2, ban3, LoteInterno, ReferenciaLoteId)
 
 	 VALUES
 
 	 (@conse, @material, @cantidad, @fecha, @proveedor,
 	  @entrada, @codigo, @lprove, @norden, @stockv,
 	  @inven, @estado, @comentarios, @ordenfabricacion, @ubicacion,
-	  @ban1, @ban2, @ban3, @LoteInterno)
-
+	  @ban1, @ban2, @ban3, @LoteInterno, @ReferenciaLoteId)
 END
+GO
 
 -- =============================================
 -- Autor: Carlos Fabrizio Arriola Carmona
@@ -174,18 +175,16 @@ GO
 -- Descripción: Procedimiento almacenado para establecer a nulo algunos valores.
 -- =============================================
 
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_datosv_VaciarMaterial') AND type in (N'P', N'PC'))
-	DROP PROCEDURE dbo.sp_datosv_VaciarMaterial
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_datosv_PasarMaterialSilo') AND type in (N'P', N'PC'))
+	DROP PROCEDURE dbo.sp_datosv_PasarMaterialSilo
 GO
 
-CREATE PROCEDURE sp_datosv_VaciarMaterial
+CREATE PROCEDURE sp_datosv_PasarMaterialSilo
 
 		@ordenfabricacion   NVARCHAR(50),
 		@ubicacion			NVARCHAR(50),
 		@conse2				INT,
-		@stockv				NVARCHAR(50),
-		@CantLoteRestante   FLOAT,
-		@LoteIntAcumulado	NVARCHAR(50)	
+		@stockv				NVARCHAR(50)	
 
 AS
 BEGIN
@@ -193,14 +192,12 @@ BEGIN
 	SET NOCOUNT ON;
 
 		UPDATE  datosv
-			SET   inven                = 0 ,
+			--SET   inven                = 0 ,
+			SET
 			      ordenfabricacion     = @ordenfabricacion,
 				  ubicacion			   = @ubicacion,  
-				  stockv               = @stockv,
-				  CantLoteRestante     = @CantLoteRestante,
-				  LoteIntAcumulado     = @LoteIntAcumulado
+				  stockv               = @stockv
 			WHERE conse2               = @conse2
-
 END
 GO
 
@@ -228,11 +225,37 @@ BEGIN
 	SET NOCOUNT ON;
 
 		UPDATE  datosv
-			SET   inven             = @inven ,
+			SET   inven             = @inven,
 			      ordenfabricacion  = @ordenfabricacion,
 				  ubicacion			= @ubicacion,  
 				  stockv            = @stockv
 			WHERE conse2            = @conse2
+
+END
+GO
+
+-- =============================================
+-- Autor: Carlos Fabrizio Arriola Carmona
+-- Fecha Creación: 27/Febrero/2014
+-- Descripción: Actualiza la cantidad de inventario de un registro.
+-- =============================================
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_datosv_ActualizarInventario') AND type in (N'P', N'PC'))
+	DROP PROCEDURE dbo.sp_datosv_ActualizarInventario
+GO
+
+CREATE PROCEDURE sp_datosv_ActualizarInventario
+
+	@conse2    INT,
+	@inven	   FLOAT
+
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+    UPDATE datosv
+		  SET inven = @inven
+		  WHERE conse2 = @conse2
 
 END
 GO
