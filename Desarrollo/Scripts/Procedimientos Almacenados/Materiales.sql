@@ -1141,7 +1141,8 @@ FROM
 	MAT.stockmin, MAT.stockmax, DAT.inven, DAT.stockv
 	FROM datosv AS DAT
 	LEFT JOIN material AS MAT
-	ON DAT.codigo = MAT.codigo) AS TablaFuente
+	ON DAT.codigo = MAT.codigo
+	WHERE DAT.codigo <> 'MATERIAL DIVERSO') AS TablaFuente
 PIVOT
 (
 	SUM(inven)
