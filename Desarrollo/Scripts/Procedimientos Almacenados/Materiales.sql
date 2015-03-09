@@ -680,8 +680,8 @@ CREATE PROCEDURE sp_mat_ordencompra_estatus_porpagar
 	@norden			 NVARCHAR(50),
 	@FechaEntrada	 DATETIME,
 	@Factura		 NVARCHAR(50),
-	@NumeroPedimento NVARCHAR(50)
-
+	@NumeroPedimento NVARCHAR(50),
+	@fechaent		 DATETIME
 AS
 BEGIN
 
@@ -691,8 +691,9 @@ BEGIN
 		  SET estatus     = 'X PAGAR',
 		  FechaEntrada    = @FechaEntrada,
 		  Factura		  = @Factura,
-		  NumeroPedimento = @NumeroPedimento
-		  WHERE norden = @norden
+		  NumeroPedimento = @NumeroPedimento,
+		  fechaent		  = @fechaent
+		  WHERE norden    = @norden
 
 END
 GO
