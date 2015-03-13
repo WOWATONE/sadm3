@@ -178,3 +178,6 @@ ALTER TABLE silo
 ADD cargainicial FLOAT
 GO
 
+ALTER TABLE detocompra
+ALTER COLUMN concepto NVARCHAR(1000) NOT NULL
+GO

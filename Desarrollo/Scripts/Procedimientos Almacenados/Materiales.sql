@@ -456,7 +456,7 @@ GO
 
 CREATE PROCEDURE sp_mat_ordencompra_cancelar
 
-	@norden nvarchar(50)
+	@norden NVARCHAR(50)
 
 AS
 BEGIN
@@ -481,18 +481,18 @@ GO
 
 CREATE PROCEDURE sp_mat_ordencompradetalle_alta
 
-	@norden nvarchar(50),
-	@cantidad nvarchar(50),
-	@concepto nvarchar(200),
-	@preciouni nvarchar(50),
-	@importedet nvarchar(50),
-	@unimed nvarchar(50),
-	@CantidadPedida nvarchar(50),
-	@Lote varchar(30),
-	@NumeroItem int,
-	@ImporteSD nvarchar(50),
-	@Descuento decimal(5,2),
-	@CodigoMaterial nvarchar(200)
+	@norden			NVARCHAR(50),
+	@cantidad		NVARCHAR(50),
+	@concepto		NVARCHAR(1000),
+	@preciouni		NVARCHAR(50),
+	@importedet		NVARCHAR(50),
+	@unimed			NVARCHAR(50),
+	@CantidadPedida NVARCHAR(50),
+	@Lote			NVARCHAR(30),
+	@NumeroItem		INT,
+	@ImporteSD		NVARCHAR(50),
+	@Descuento		DECIMAL(5,2),
+	@CodigoMaterial NVARCHAR(200)
 
 AS
 BEGIN

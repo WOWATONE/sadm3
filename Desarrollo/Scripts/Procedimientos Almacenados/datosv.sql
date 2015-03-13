@@ -29,7 +29,8 @@ CREATE PROCEDURE sp_datosv_alta
 	@ban2				NVARCHAR(50),
 	@ban3				NVARCHAR(50),
 	@LoteInterno		NVARCHAR(50),
-	@ReferenciaLoteId	INT	
+	@ReferenciaLoteId	INT,
+	@ClaseResina		VARCHAR(100)	
 	
 AS
 BEGIN
@@ -41,14 +42,16 @@ BEGIN
 	(conse, material, cantidad, fecha, proveedor,
 	 entrada, codigo, lprove, norden, stockv,
 	 inven, estado, comentarios, ordenfabricacion, ubicacion,
-	 ban1, ban2, ban3, LoteInterno, ReferenciaLoteId)
+	 ban1, ban2, ban3, LoteInterno, ReferenciaLoteId,
+	 ClaseResina)
 
 	 VALUES
 
 	 (@conse, @material, @cantidad, @fecha, @proveedor,
 	  @entrada, @codigo, @lprove, @norden, @stockv,
 	  @inven, @estado, @comentarios, @ordenfabricacion, @ubicacion,
-	  @ban1, @ban2, @ban3, @LoteInterno, @ReferenciaLoteId)
+	  @ban1, @ban2, @ban3, @LoteInterno, @ReferenciaLoteId,
+	  @ClaseResina)
 END
 GO
 
@@ -121,7 +124,8 @@ CREATE PROCEDURE sp_datosv_asignar_conformidad
 	@conse2		    INT,
 	@stockv	        NVARCHAR(50),
 	@estado	        NVARCHAR(50),
-	@comentarios    NTEXT
+	@comentarios    NTEXT,
+	@ubicacion		NVARCHAR(50)
 
 AS
 BEGIN
@@ -130,7 +134,8 @@ BEGIN
     UPDATE datosv
 	SET   stockv      = @stockv,
 		  estado      = @estado,
-		  comentarios = @comentarios
+		  comentarios = @comentarios,
+		  ubicacion   = @ubicacion
 	WHERE conse2   = @conse2
 
 END

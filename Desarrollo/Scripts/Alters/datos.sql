@@ -5,3 +5,4 @@ GO
 ALTER TABLE datos
 ADD total MONEY
 GO
+

@@ -9,3 +9,7 @@ GO
 ALTER TABLE datosv
 ADD ReferenciaLoteId INT
 GO
+
+ALTER TABLE datosv
+ADD ClaseResina VARCHAR(100)
+GO
