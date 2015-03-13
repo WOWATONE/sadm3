@@ -89,7 +89,8 @@ BEGIN
 			 minmen, opmaq, no_item, molde, stockmin, stockmax, 
 			 e_lote, codigodibujo, niving, fa,
 			 e_bolsa, e_loteb, e_caja, e_lotec, comen,
-			 fec_alta, mod_alta, usu_alta, TiempoMontaje, TiempoDesmontaje)
+			 fec_alta, mod_alta, usu_alta, TiempoMontaje, TiempoDesmontaje,
+			 cicloreal)
 			 
 			 VALUES
 			(@desc_prod, @c_interno, @cliente_nombre, @desc_com, @pesoneto,
@@ -101,7 +102,8 @@ BEGIN
 			 @minmen, @opmaq, @no_item, @molde, @stockmin, @stockmax, 
 			 @e_lote, @codigodibujo, @niving, @fa,
 			 @e_bolsa, @e_loteb, @e_caja, @e_lotec, @comen,
-			 GETDATE(), @mod_alta, @usu_alta, @TiempoMontaje, @TiempoDesmontaje)
+			 GETDATE(), @mod_alta, @usu_alta, @TiempoMontaje, @TiempoDesmontaje,
+			 @ciclo)
 
 	
 	EXEC sp_movimientos_alta @dpto, @quien, @clave, @fecha, @hora,
@@ -225,7 +227,8 @@ BEGIN
 		 fec_mod = GETDATE(),
 		 usu_mod = @usu_mod,
 		 TiempoMontaje	= @TiempoMontaje,
-	     TiempoDesmontaje = @TiempoDesmontaje
+	     TiempoDesmontaje = @TiempoDesmontaje,
+		 cicloreal = @ciclo
 
 		 WHERE c_interno = @c_interno
 END
@@ -293,7 +296,7 @@ GO
 
 CREATE PROCEDURE sp_pcp_inventario_componente_eliminar
 
-		@c_interno nvarchar(50)
+		@c_interno NVARCHAR(50)
 AS
 BEGIN
 
@@ -316,10 +319,10 @@ GO
 
 CREATE PROCEDURE sp_pcp_inventario_empaque_alta
 
-		@c_interno nvarchar(50),
-		@empaque nvarchar(50),
-		@cantidad float,
-		@ban1 nvarchar(50)
+		@c_interno	NVARCHAR(50),
+		@empaque	NVARCHAR(50),
+		@cantidad	FLOAT,
+		@ban1		NVARCHAR(50)
 AS
 BEGIN
 
@@ -342,7 +345,7 @@ GO
 
 CREATE PROCEDURE sp_pcp_inventario_empaque_eliminar
 
-		@c_interno nvarchar(50)
+		@c_interno NVARCHAR(50)
 AS
 BEGIN
 
@@ -566,10 +569,8 @@ GO
 		@num_ob10			NVARCHAR(50),
 		@monpalpais			NVARCHAR(50)
 
-	AS
-	BEGIN
-
-		
+AS
+BEGIN
 		SET NOCOUNT ON;
 
 		UPDATE cliente
@@ -637,8 +638,8 @@ GO
 	   EXEC sp_movimientos_alta @dpto, @quien, @clave, @fecha, @hora,
 								@codigo, @modificacion, @ordenfabricacion, @ordencliente, @clienteproveedor,
 								@ubicacion, @lote, @modulo, @cantidad, @almacen, null, null
-	END
-	GO
+END
+GO
 
 -- =============================================
 -- Autor: Carlos Fabrizio Arriola Carmona
