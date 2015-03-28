@@ -71,7 +71,8 @@ CREATE PROCEDURE sp_pcp_prod_alta
 	@lote				NVARCHAR(50),
 	@modulo				NVARCHAR(50),
 	@cantidad			NVARCHAR(50),
-	@almacen			NVARCHAR(50)
+	@almacen			NVARCHAR(50),
+	@tipoet				INT
 
 AS
 BEGIN
@@ -90,7 +91,7 @@ BEGIN
 			 e_lote, codigodibujo, niving, fa,
 			 e_bolsa, e_loteb, e_caja, e_lotec, comen,
 			 fec_alta, mod_alta, usu_alta, TiempoMontaje, TiempoDesmontaje,
-			 cicloreal)
+			 cicloreal, tipoet)
 			 
 			 VALUES
 			(@desc_prod, @c_interno, @cliente_nombre, @desc_com, @pesoneto,
@@ -103,7 +104,7 @@ BEGIN
 			 @e_lote, @codigodibujo, @niving, @fa,
 			 @e_bolsa, @e_loteb, @e_caja, @e_lotec, @comen,
 			 GETDATE(), @mod_alta, @usu_alta, @TiempoMontaje, @TiempoDesmontaje,
-			 @ciclo)
+			 @ciclo, @tipoet)
 
 	
 	EXEC sp_movimientos_alta @dpto, @quien, @clave, @fecha, @hora,
@@ -172,7 +173,8 @@ CREATE PROCEDURE sp_pcp_prod_modificar
 	@fec_mod			DATETIME,
 	@usu_mod			INT,
 	@TiempoMontaje		DECIMAL(7, 2),
-	@TiempoDesmontaje	DECIMAL(7, 2)
+	@TiempoDesmontaje	DECIMAL(7, 2),
+	@tipoet				INT
 
 AS
 BEGIN
@@ -228,7 +230,8 @@ BEGIN
 		 usu_mod = @usu_mod,
 		 TiempoMontaje	= @TiempoMontaje,
 	     TiempoDesmontaje = @TiempoDesmontaje,
-		 cicloreal = @ciclo
+		 cicloreal = @ciclo,
+		 tipoet = @tipoet
 
 		 WHERE c_interno = @c_interno
 END

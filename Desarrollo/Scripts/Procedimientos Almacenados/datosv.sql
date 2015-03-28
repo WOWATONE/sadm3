@@ -264,3 +264,88 @@ BEGIN
 
 END
 GO
+
+-- =============================================
+-- Autor: Carlos Fabrizio Arriola Carmona
+-- Fecha Creación: 20/Marzo/2015
+-- Descripción: Elimina un registro de la tabla de datosv.
+-- =============================================
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_datosv_baja') AND type in (N'P', N'PC'))
+	DROP PROCEDURE dbo.sp_datosv_baja
+GO
+
+CREATE PROCEDURE sp_datosv_baja
+
+	@conse2    INT
+
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+    DELETE datosv
+    WHERE conse2 = @conse2
+
+END
+GO
+
+-- =============================================
+-- Autor: Carlos Fabrizio Arriola Carmona
+-- Fecha Creación: 20/Marzo/2015
+-- Descripción: Actualiza un registro de la tabla de datosv.
+-- =============================================
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_datosv_ActualizarMezcla') AND type in (N'P', N'PC'))
+	DROP PROCEDURE dbo.sp_datosv_ActualizarMezcla
+GO
+
+CREATE PROCEDURE sp_datosv_ActualizarMezcla
+
+	@conse2       INT,
+	@inven	      FLOAT,
+	@ubicacion    NVARCHAR(50),
+	@LoteInterno  NVARCHAR(50)
+
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+    UPDATE datosv
+	SET inven       = @inven,
+	    ubicacion   = @ubicacion,
+		LoteInterno = @LoteInterno
+
+    WHERE conse2 = @conse2
+
+END
+GO
+
+
+-- =============================================
+-- Autor: Carlos Fabrizio Arriola Carmona
+-- Fecha Creación: 20/Marzo/2015
+-- Descripción: Elimina un registro de la tabla de datosv.
+-- =============================================
+
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'dbo.sp_datosv_ActualizarMezcla2') AND type in (N'P', N'PC'))
+	DROP PROCEDURE dbo.sp_datosv_ActualizarMezcla2
+GO
+
+CREATE PROCEDURE sp_datosv_ActualizarMezcla2
+
+	@conse2       INT,
+	@inven	      FLOAT,
+	@ubicacion    NVARCHAR(50)
+
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+    UPDATE datosv
+	SET inven       = @inven,
+	    ubicacion   = @ubicacion
+
+    WHERE conse2 = @conse2
+
+END
+GO
