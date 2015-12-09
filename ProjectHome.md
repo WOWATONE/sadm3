@@ -1,0 +1,1 @@
+Desarrollo de la tercera versión del sistema de administración para la empresa Deltaplast México. Proyecto desarrollado en VB.NET framework 4.0 con componentes Devexpress y SQL server 2012 como RDBMS.
